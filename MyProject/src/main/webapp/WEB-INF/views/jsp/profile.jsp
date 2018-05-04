@@ -3,11 +3,12 @@
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
     pageEncoding="ISO-8859-1"%>
     <%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
+        <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-<link rel="stylesheet" href="css.css">
+<link rel="stylesheet" href="css/css.css">
 <title>DominosPizza | My profile</title>
 <style>
 
@@ -76,7 +77,7 @@
   </div> 
 </div>
 <div id="#profile" style = " margin: auto; text-align:center;">
-${info}
+<c:out value=" ${info}"></c:out>
 	<form action = "profile" method = "get">
 	<img src="user-icon.png" width = "80" style = "margin-top:5px;opacity:1;possition:center;display: block;margin-top:150px;margin-left: auto; margin-right: auto;"><h3 style= "border: none;color: black;padding: 10px 150px;display: inline-block;font-size: 18px;  border-radius: 10px;">Profile</h3>
 	<%  User user  = (User) session.getAttribute("user"); %>
@@ -103,7 +104,7 @@ ${info}
 					<td>Phone:<input type="text" placeholder="<%= user.getPhoneNumber()%>" name = "phone number"></td>
 	</tr>		
 	<tr>
-					<td><input type="submit" value = "Save changes"></td>
+					<td><button href = "profie?action=update">Save changes"</button></td>
 	</tr>		
 	</table>
 	</form>

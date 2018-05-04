@@ -27,11 +27,6 @@ public class UserManager {
 		return instance;
 	}
 	
-	public boolean register(User user) throws SQLException {
-		userDao.addNewUser(user);
-		
-		return false;
-	}
 	
 	public User logIn(String username, String password) throws SQLException, InvalidArgumentsException {
 		User user = null;

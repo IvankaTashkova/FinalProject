@@ -19,7 +19,7 @@ public interface IUserDao {
 	
 	public void updateUser(User user) throws SQLException;
 	
-	public void addNewUser(User user) throws SQLException;
+	public boolean addNewUser(User user) throws SQLException;
 	
 	public boolean checkUserExist(String username) throws SQLException;
 	

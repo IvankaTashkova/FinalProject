@@ -125,7 +125,7 @@ public class UserDao implements IUserDao{
 	}
 
 	@Override
-	public void addNewUser(User user) throws SQLException {
+	public boolean addNewUser(User user) throws SQLException {
 		String sqlInsertUser = "INSERT INTO users (first_name, last_name,username,password,email,phone_number,isAdmin) VALUES(?,?,?,?,?,?,?)";
 		try(PreparedStatement ps = connection.prepareStatement(sqlInsertUser,Statement.RETURN_GENERATED_KEYS)){
 			ps.setString(1, user.getFirstName());
@@ -139,8 +139,14 @@ public class UserDao implements IUserDao{
 			try(ResultSet rs = ps.getGeneratedKeys()){
 				if(rs.next()) {
 					user.setId(rs.getLong(1));
+					return true;
 				}
-				System.out.println("New user added!");
+				else{
+					  throw new SQLException("Error occured while creating user!");
+				}
+			}
+			finally {
+				return false;
 			}
 		}
 	}
