@@ -29,7 +29,7 @@ public class UserManager {
 	
 	public boolean register(User user) throws SQLException {
 		userDao.addNewUser(user);
-		//todo
+		
 		return false;
 	}
 	

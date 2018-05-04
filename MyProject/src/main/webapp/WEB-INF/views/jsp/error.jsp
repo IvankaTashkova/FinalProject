@@ -4,19 +4,19 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <title>Error</title>
 </head>
 <style>
 body{
-background-image: url('error.png');
+background-image: url('images/error.png');
 background-repeat:no-repeat;
 background-size:cover;
 }
 </style>
 <body>
 		<h1>We are sorry,something went wrong!</h1>
-		<% Exception e = (Exception) request.getAttribute("exception"); %>
-		<h2>Reason: <%= e.getMessage() %></h2>
-		<p>Back to <a href="index.jsp">home page!</a></p>
+		<h2><c:out value="${requestScope.exception.message}"></c:out></h2>
+		<p>Back to <a href="home">home page!</a></p>
 </body>
 </html>

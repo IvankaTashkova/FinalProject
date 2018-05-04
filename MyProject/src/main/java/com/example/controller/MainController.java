@@ -49,14 +49,10 @@ public class MainController {
 		}
 	}
 	
-	@RequestMapping(value = "/hi",method = RequestMethod.GET)
+	@RequestMapping(value = "/home",method = RequestMethod.GET)
 	public String hi() {
-		return "hello";
+		return "index";
 	}
 	
-	@RequestMapping(value = "/html",method = RequestMethod.GET)
-	public String html() {
-		return "forward: /html/html.html";
-	}
 	
 }

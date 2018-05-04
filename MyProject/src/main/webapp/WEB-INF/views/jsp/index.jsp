@@ -20,10 +20,10 @@ h1,h2,h3,h4,h5,h6 {
 <!-- Navbar (sit on top) -->
 <div class="w3-top" style = "font-family:Arial">
   <div class="w3-bar w3-white w3-padding w3-card">
-    <a href="#home" ><img border="0"src="images/home-icon.png" width="40" height="40"></a>
+    <a href="home" ><img border="0"src="images/home-icon.png" width="40" height="40"></a>
     <!-- Right-sided navbar links. Hide them on small screens -->
     <div class="w3-right w3-hide-small" style = "font-family:Arial">
-      <a href="login.html" class="w3-bar-item w3-button">Log in</a>
+      <a href="login" class="w3-bar-item w3-button">Log in</a>
       <a href="#menu" class="w3-bar-item w3-button">Menu</a>
       <a href="#contact" class="w3-bar-item w3-button">Contact</a>
     </div>

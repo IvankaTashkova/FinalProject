@@ -40,12 +40,12 @@ public class UserController {
 			return "error";
 			
 		}
-		if (user != null) {
-			session.setAttribute("user", user);
-			return "logged";
-		} else {
+		if (user == null) {
 			model.addAttribute("error", "You are not logged in.Try again!");
 			return "login";
+		} else {
+			session.setAttribute("user", user);
+			return "logged";
 		} 
 	}
 	
@@ -132,6 +132,11 @@ public class UserController {
 				model.addAttribute("info","Error occured:"+e.getMessage());
 			}
 		} 
+		return "register";
+	}
+	
+	@RequestMapping(value = "/register",method = RequestMethod.GET)
+	public String getRegister() {
 		return "register";
 	}
 }
