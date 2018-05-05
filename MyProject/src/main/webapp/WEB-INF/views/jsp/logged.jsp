@@ -1,6 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
     pageEncoding="ISO-8859-1"%>
     <%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
+    <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <title>Domino's Pizza | Home</title>
@@ -42,7 +43,7 @@ h1,h2,h3,h4,h5,h6 {
 
   <div class="w3-row w3-padding-64" id="menu">
     <div class="w3-col l6 w3-padding-large">
-    
+    <c:import url="menu.jsp"></c:import>
     </div>
     <div class="w3-col l6 w3-padding-large">
       <img src="images/image-menu.jpg" class="w3-round w3-image w3-opacity-min" alt="Menu" style="width:100%">

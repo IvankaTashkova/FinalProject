@@ -11,9 +11,9 @@ import javax.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
 import com.example.model.Address;
 import com.example.model.Order;
 import com.example.model.Product;
@@ -38,73 +38,69 @@ public class CartController {
 	@Autowired
 	private RestaurantDao restaurantDao;
 	
-	@RequestMapping(value = "/cart", method = RequestMethod.GET)
-	protected String getCart(@RequestParam String action,@RequestParam String id,HttpSession session) {
+	@RequestMapping(value = "/cart/add/{productId}", method = RequestMethod.GET)
+	protected String getCart(HttpSession session,@PathVariable (value = "productId") String productId,Model model) {
 		User user = (User) session.getAttribute("user");
 		Map<Product, Integer> cart = new HashMap();
-		
-		if(action.equals("addToCart")) {
-			if (session.getAttribute("cart") == null) {
-				try {
-					user.addProductToShoppingCart(productDao.getProductById(Integer.parseInt(id)), 1);
-					cart = user.getCart();
-				} catch (NumberFormatException | SQLException | InvalidArgumentsException e) {
-					System.out.println(e.getMessage());
-				}
-				
-			}
-			else {
-				cart.putAll((Map<Product, Integer>)session.getAttribute("cart"));
-				try {
-					if(isExist(Integer.parseInt(id), cart)) {
-						for (Entry<Product, Integer> entry : cart.entrySet()) {
-							if(entry.getKey().equals(productDao.getProductById(Integer.parseInt(id)))) {
-								int quantity = entry.getValue();
-								cart.put(productDao.getProductById(Integer.parseInt(id)), quantity+1);
-							}
-						}
-					}
-					else {
-						cart.put(productDao.getProductById(Integer.parseInt(id)), 1);
-						user.addProductToShoppingCart(productDao.getProductById(Integer.parseInt(id)), 1);
-					}
-				} catch (NumberFormatException | SQLException | InvalidArgumentsException e) {
-					System.out.println(e.getMessage());
-				}
-			}	
-			session.setAttribute("cart", cart);
-			return "shoppingcart";
+		if (session.getAttribute("cart") == null) {
+			try {
+				user.addProductToShoppingCart(productDao.getProductById(Long.parseLong(productId)), 1);
+				cart = user.getCart();
+			} catch (NumberFormatException | SQLException | InvalidArgumentsException e) {
+				System.out.println(e.getMessage());
+			}			
 		}
-		else if(action.equals("delete")) {
+		else {
 			cart.putAll((Map<Product, Integer>)session.getAttribute("cart"));
-			if(isExist(Integer.parseInt(id), cart)) {
-				for (Entry<Product, Integer> entry : cart.entrySet()) {
-					try {
-						if(entry.getKey().equals(productDao.getProductById(Integer.parseInt(id)))) {
+			try {
+				if(isExist(Long.parseLong(productId), cart)) {
+					for (Entry<Product, Integer> entry : cart.entrySet()) {
+						if(entry.getKey().equals(productDao.getProductById(Long.parseLong(productId)))) {
 							int quantity = entry.getValue();
-							if(quantity == 1) {
-								cart.remove(productDao.getProductById(Integer.parseInt(id)));
-							}
-							else {
-								cart.put(productDao.getProductById(Integer.parseInt(id)), quantity-1);
-							}
+							cart.put(productDao.getProductById(Long.parseLong(productId)), quantity+1);
 						}
-					} catch (NumberFormatException | SQLException | InvalidArgumentsException e) {
-						System.out.println(e.getMessage());
 					}
 				}
+				else {
+					cart.put(productDao.getProductById(Long.parseLong(productId)), 1);
+					user.addProductToShoppingCart(productDao.getProductById(Long.parseLong(productId)), 1);
+				}
+			} catch (NumberFormatException | SQLException | InvalidArgumentsException e) {
+				System.out.println(e.getMessage());
 			}
-			
+		}	
 			session.setAttribute("cart", cart);
 			Order order = new Order(calculatePrice(cart), LocalDateTime.now(), cart);
 			session.setAttribute("order", order);
 			return "shoppingcart";
-		}
-		return "shoppingcart";
 		
 	}
+	@RequestMapping(value = "/cart/delete/{productId}", method = RequestMethod.GET)
+	protected String delete(HttpSession session,@PathVariable (value = "productId") String productId,Model model) {
+		User user = (User) session.getAttribute("user");
+		Map<Product, Integer> cart = new HashMap();
+		cart.putAll((Map<Product, Integer>)session.getAttribute("cart"));
+		if(isExist(Long.parseLong(productId), cart)) {
+			for (Entry<Product, Integer> entry : cart.entrySet()) {
+				try {
+					if(entry.getKey().equals(productDao.getProductById(Long.parseLong(productId)))) {
+						int quantity = entry.getValue();
+						if(quantity == 1) {
+							cart.remove(productDao.getProductById(Long.parseLong(productId)));
+						}
+						else {
+							cart.put(productDao.getProductById(Long.parseLong(productId)), quantity-1);
+						}
+					}
+				} catch (NumberFormatException | SQLException | InvalidArgumentsException e) {
+					System.out.println(e.getMessage());
+				}
+			}
+		}		
+		return "shoppingcart";
+	}
 	
-	private boolean isExist(int id,Map<Product, Integer> cart) {
+	private boolean isExist(long id,Map<Product, Integer> cart) {
 		for (Entry<Product, Integer> e : cart.entrySet()) {
 			if(e.getKey().getId() == id) {
 				return true;
@@ -159,17 +155,5 @@ public class CartController {
 		}
 		
 		return "logged";
-	}
-	
-	@RequestMapping(value = "/hello", method = RequestMethod.GET)
-	public String hello(Model m) {
-		try {
-			List<Product> products = productDao.getAllProducts();
-			m.addAttribute("products",products);
-		} catch (SQLException | InvalidArgumentsException e) {
-			System.out.println(e.getMessage());
-			e.printStackTrace();
-		}
-		return "hello";
 	}
 }

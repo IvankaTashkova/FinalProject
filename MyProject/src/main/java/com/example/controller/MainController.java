@@ -3,6 +3,8 @@ package com.example.controller;
 import java.sql.SQLException;
 import java.util.List;
 import javax.servlet.ServletContext;
+import javax.servlet.http.HttpSession;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -19,11 +21,10 @@ public class MainController {
 	private ProductDao productDao;
 	
 	@RequestMapping(value = {"/","/home"},method = RequestMethod.GET)
-	public String products(Model model) throws SQLException, ClassNotFoundException {
-				
+	public String products(Model model,HttpSession session) throws SQLException, ClassNotFoundException {
 		menu(model);
 		
-		if (model.containsAttribute("user")) {
+		if (session.getAttribute("user") != null) {
 			return "logged";
 		} else {
 			return "index";

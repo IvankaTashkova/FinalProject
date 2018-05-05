@@ -1,7 +1,7 @@
 package com.example.controller;
 
 import java.sql.SQLException;
-
+import java.util.HashSet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,12 +10,13 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
+import com.example.model.Ingredient;
 import com.example.model.Product;
 import com.example.model.User;
 import com.example.model.dao.ProductDao;
 import com.example.model.dao.UserDao;
 import com.example.util.InvalidArgumentsException;
+
 
 
 @Controller
@@ -27,15 +28,18 @@ public class ProductController {
 	@Autowired
 	private UserDao userDao;
 	
-	@RequestMapping(value="/pizza",method = RequestMethod.GET)
-	public String getProductPage(@RequestParam String id,HttpSession session) {
+	@RequestMapping(value="/pizza/{productId}",method = RequestMethod.GET)
+	public String getProductPage(HttpSession session,@PathVariable (value = "productId") String productId,Model model) {		
 		Product pizza = null;
+		HashSet<Ingredient> ingredients =  new HashSet<>();
 		try {
-			pizza = productDao.getProductById(Integer.parseInt(id));
+			pizza = productDao.getProductById(Long.parseLong(productId));
+			ingredients.addAll(productDao.getProductIngredients(Long.parseLong(productId)));
 		} catch (NumberFormatException | SQLException | InvalidArgumentsException e) {
 			System.out.println(e.getMessage());
 		}
 		session.setAttribute("pizza", pizza);
+		session.setAttribute("ingredients", ingredients);
 		return "pizza";
 	}
 	

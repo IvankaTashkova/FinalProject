@@ -6,6 +6,7 @@ import javax.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -39,20 +40,22 @@ public class UserController {
 				user = userDao.getUserByUsername(username);
 				if(password.equals(user.getPassword())) {
 					session.setAttribute("user", user);
+					return "logged";
 				}
+				else {
+					model.addAttribute("info", "Wrong username or password!");
+					return "login";
+				}
+			}
+			else {
+				model.addAttribute("info", "Wrong username or password!");
+				return "login";
 			}
 		} catch (SQLException | InvalidArgumentsException e) {
 			e.printStackTrace();
 			model.addAttribute("exception",e);
 			return "error";
 		}
-		if (user == null) {
-			model.addAttribute("info", "Wrong username or password!");
-			return "login";
-		} else {
-			session.setAttribute("user", user);
-			return "logged";
-		} 
 	}
 	
 	@RequestMapping(value = "/logout",method = RequestMethod.POST)
@@ -60,6 +63,7 @@ public class UserController {
 		session.invalidate();
 		return "login";
 	}
+	
 	
 	@RequestMapping(value = "/profile",method = RequestMethod.GET)
 	public String getProfileInfo(HttpSession session,Model model) {
@@ -70,8 +74,8 @@ public class UserController {
 		model.addAttribute("user", user);
 		return "profile";
 	}
-	
-	@RequestMapping(value = "/profile",method = RequestMethod.POST)
+	/*
+	@RequestMapping(value = "/profile",method = RequestMethod.GET)
 	public String editProfile(Model model,
 			@RequestParam String id,
 			@RequestParam String firstname, 
@@ -81,37 +85,56 @@ public class UserController {
 			@RequestParam String password,
 			@RequestParam String confirmpassword,
 			@RequestParam String phoneNumber, 
-			HttpSession session,
-			@RequestParam String action) {
-		User user = null;
-		password = BCrypt.hashpw(password, BCrypt.gensalt());
-		confirmpassword = BCrypt.hashpw(confirmpassword, BCrypt.gensalt());
-		if (password.equals(confirmpassword)) {
+			HttpSession session) {
+		User user = (User) session.getAttribute("user");
+		//password = BCrypt.hashpw(password, BCrypt.gensalt());
+		//confirmpassword = BCrypt.hashpw(confirmpassword, BCrypt.gensalt());
+		return "profile";
+	}*/
+
+	@RequestMapping(value = "/profile/{id}",method = RequestMethod.GET)
+	public String getProfile(@PathVariable (value = "id") long id,Model model,HttpSession session) {
+		
+		return "profile";
+	}
+	
+	@RequestMapping(value = "/profile/{id}",method = RequestMethod.POST)
+	public String updateProfile(Model model,
+			@PathVariable (value = "id") long id,
+			@RequestParam String firstname, 
+			@RequestParam String lastname,
+			@RequestParam String username,
+			@RequestParam String email,
+			@RequestParam String password,
+			@RequestParam String confirmpassword,
+			@RequestParam String phoneNumber, 
+			HttpSession session) {
+		User user = (User) session.getAttribute("user");
+		//password = BCrypt.hashpw(password, BCrypt.gensalt());
+		//confirmpassword = BCrypt.hashpw(confirmpassword, BCrypt.gensalt());
+		if (password.equals(confirmpassword) && user != null) {
 			try {
-				user = new User(Long.parseLong(id),username, firstname, lastname, phoneNumber, password, email);
-			} catch (InvalidArgumentsException e) {
+				user.setFirstName((firstname == null) ? user.getFirstName() : firstname);
+				user.setLastName((lastname == null) ? user.getFirstName() : lastname);
+				user.setUsername((username == null) ? user.getFirstName() : username);
+				user.setPassword((password == null) ? user.getFirstName() : password);
+				user.setEmail((email == null) ? user.getFirstName() : email);
+				user.setPhoneNumber((phoneNumber == null) ? user.getFirstName() : phoneNumber);
+				user.setId(id);
+				userDao.updateUser(user);
+				model.addAttribute("info","Changes saved!");	
+				session.setAttribute("user", user);
+			} catch (InvalidArgumentsException | SQLException e) {
 				model.addAttribute("info","Incorrect data! Try again!");
 				System.out.println(e.getMessage());
+				return "profile"; 
 			}
 		}
-		if(action.equals("update")){
-			if (user != null) {			
-				try {
-					user.setFirstName(firstname);
-					user.setLastName(lastname);
-					user.setUsername(username);
-					user.setPassword(password);
-					user.setEmail(email);
-					user.setPhoneNumber(phoneNumber);
-					user.setId(Long.parseLong(id));
-					UserManager.getInstance().updateUser(user);
-					model.addAttribute("info","Changes saved!");				
-				} catch (SQLException|InvalidArgumentsException e) {
-					model.addAttribute("info",e.getMessage());
-				}
-			} 
+		else {
+			model.addAttribute("info", "Passwords don't match!");
 			return "profile";
 		}
+		model.addAttribute("info", "Invalid user");
 		return "profile";
 	}
 	

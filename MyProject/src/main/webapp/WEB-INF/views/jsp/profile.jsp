@@ -22,6 +22,7 @@
     background-color: red;
     overflow-x: hidden;
     padding-top: 200px;
+    opacity:0.75;
 }
 
 .sidenav button {
@@ -32,6 +33,7 @@
     font-size: 20px;
     color: white;
     display: block;
+    opacity:0.75;
 }
 
 .onclick button {
@@ -42,6 +44,7 @@
     font-size: 20px;
     color: red;
     display: block;
+    opacity:0.75;
 }
 
 .sidenav button:hover {
@@ -67,26 +70,26 @@
 </div>
 <div class="w3-top" style = "font-family:Arial">
   <div class="w3-bar w3-white w3-padding w3-card">
-    <a href="logged.html" ><img border="0"src="home-icon.png" width="40" height="40"></a>
+    <a href="home" ><img border="0"src="images/home-icon.png" width="40" height="40"></a>
     <!-- Right-sided navbar links. Hide them on small screens -->
     <div class="w3-right w3-hide-small" style = "font-family:Arial">
-      <a href="profile.html"><img src = "user-icon.png" width = "25" height = "25" style = "margin-top:0px; margin-bottom:0;"></a>
+      <a href="profile"><img src = "images/user-icon.png" width = "25" height = "25" style = "margin-top:0px; margin-bottom:0;"></a>
       <a href="#menu" class="w3-bar-item w3-button">Menu</a>
       <form action = "logout" method = "post"><input type= "submit" class="w3-bar-item w3-button" value = "Logout"></form>
     </div>
   </div> 
 </div>
 <div id="#profile" style = " margin: auto; text-align:center;">
-<c:out value=" ${info}"></c:out>
+<p style = "color:red;"><c:out value=" ${info}"></c:out></p>
 	<form action = "profile" method = "get">
-	<img src="user-icon.png" width = "80" style = "margin-top:5px;opacity:1;possition:center;display: block;margin-top:150px;margin-left: auto; margin-right: auto;"><h3 style= "border: none;color: black;padding: 10px 150px;display: inline-block;font-size: 18px;  border-radius: 10px;">Profile</h3>
+	<img src="images/user-icon.png" width = "80" style = "margin-top:5px;opacity:1;possition:center;display: block;margin-top:150px;margin-left: auto; margin-right: auto;"><h3 style= "border: none;color: black;padding: 10px 150px;display: inline-block;font-size: 18px;  border-radius: 10px;">Profile</h3>
 	<%  User user  = (User) session.getAttribute("user"); %>
 	<table style = "margin: auto;">
 	<tr>
-					<td>First name:<input type="text" placeholder="<%= user.getFirstName()%>" name = "first name"></td>
+					<td>First name:<input type="text" placeholder="<%= user.getFirstName()%>" name = "firstname"></td>
 	</tr>
 	<tr>
-					<td>Lastname:<input type="text" placeholder="<%= user.getLastName()%>" name = "last name"></td>
+					<td>Lastname:<input type="text" placeholder="<%= user.getLastName()%>" name = "lastname"></td>
 	</tr>
 	<tr>
 					<td>Username:<input type="text" placeholder="<%= user.getUsername()%>" name = "username"></td>
@@ -95,16 +98,16 @@
 					<td>Password:<input type="password" placeholder="**********" name = "password"></td>
 	</tr>
 	<tr>
-					<td>Confirm password:<input type="password" placeholder="**********" name = "confirm password"></td>
+					<td>Confirm password:<input type="password" placeholder="**********" name = "confirmpassword"></td>
 	</tr>
 	<tr>
 					<td>Email:<input type="email" placeholder="<%= user.getEmail()%>" name = "email"></td>
 	</tr>
 	<tr>
-					<td>Phone:<input type="text" placeholder="<%= user.getPhoneNumber()%>" name = "phone number"></td>
+					<td>Phone:<input type="text" placeholder="<%= user.getPhoneNumber()%>" name = "phoneNumber"></td>
 	</tr>		
 	<tr>
-					<td><button href = "profie?action=update">Save changes"</button></td>
+					<td><a href = "profile/${user.id}" style = "background-color:red;color:white;border:none;border-radius:5px;height:50px;opacity:0.75;">Save changes</a></td>
 	</tr>		
 	</table>
 	</form>

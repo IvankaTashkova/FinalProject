@@ -8,5 +8,5 @@
 	<h4><c:out value="${product.name}"></c:out></h4>
 	<p class="w3-text-grey"></p>
 	<h4><c:out value="${product.price}"></c:out></h4>
-	<a href="pizza?id=${product.id}" ><img border="0"src="images/eCommerce-ICON-small.png" width="20" height="20"></a>		
+	<a href="pizza/${product.id}" ><img border="0"src="images/eCommerce-ICON-small.png" width="20" height="20"></a>		
 	</c:forEach>
