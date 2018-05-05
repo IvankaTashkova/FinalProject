@@ -20,7 +20,7 @@
 	<div class = "signin-container" style= "text-align:center">
 		<form action="register" method="post" >
 		<p style="color:red;"><c:out value="${info}"></c:out></p>
-		<h3  style= "background-color: red;border: none;color: white;padding: 5px 150px;text-align: center;display: inline-block;font-size: 18px;border-radius:10px;opacity:0.85;">Sign in</h3>
+		<h3  style= "background-color: red;border: none;color: white;padding: 5px 150px;text-align: center;display: inline-block;font-size: 18px;border-radius:10px; opacity:0.85;">Sign in</h3>
 		<p><input style = "padding:5px;margin-left:25%;display:block;border:none;border-bottom:1px solid red;width:200px;height:40px;text-align:center;" type="text" placeholder="first name" required name="firstname"></p>
 		  <p><input style = "padding:5px;margin-left:25%;display:block;border:none;border-bottom:1px solid red;width:200px;height:40px;text-align:center;" type="text" placeholder="last name" required name="lastname"></p>
 		  <p><input style = "padding:5px; margin-left:25%;display:block;border:none;border-bottom:1px solid red;width:200px;height:40px;text-align:center;" type="text" placeholder="username" required name="username"></p>

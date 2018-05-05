@@ -42,16 +42,13 @@ h1,h2,h3,h4,h5,h6 {
 <div class="w3-content" style="max-width:1100px">  
   <hr>
 
-  <div class="w3-row w3-padding-64" id="menu">
+   <div class="w3-row w3-padding-64" id="menu">
     <div class="w3-col l6 w3-padding-large">
-  	 	
-<c:forEach var="product" items="${applicationScope.products}">
-	<h4><c:out value="${product.name}"></c:out></h4>
-	<p class="w3-text-grey">
-	</p>
-	<h2><c:out value="${product.price}"></c:out></h2>
-	<a href="pizza?id=${product.id}" ><img border="0"src="imges/eCommerce-ICON-small.png" width="20" height="20"></a>		
-</c:forEach>
+      <h1 class="w3-center">Menu</h1><br>
+	  <br>
+	  <br>
+     <c:import url="menu"></c:import>
+    </div>
     <div class="w3-col l6 w3-padding-large">
       <img src="images/image-menu.jpg" class="w3-round w3-image w3-opacity-min" alt="Menu" style="width:100%">
     </div>
@@ -67,7 +64,7 @@ h1,h2,h3,h4,h5,h6 {
       <a href = "https://www.youtube.com/channel/UCUTBiIm_r68gSa1JY2tgDLg"><img src ="images/yt.png" width="40" height="30"></a></p>
 	<p></p>
   </div>
-  
+  </div>
 <!-- End page content -->
 </div>
 

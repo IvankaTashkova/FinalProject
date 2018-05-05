@@ -10,6 +10,7 @@ import java.util.Map.Entry;
 import javax.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -159,5 +160,16 @@ public class CartController {
 		
 		return "logged";
 	}
-
+	
+	@RequestMapping(value = "/hello", method = RequestMethod.GET)
+	public String hello(Model m) {
+		try {
+			List<Product> products = productDao.getAllProducts();
+			m.addAttribute("products",products);
+		} catch (SQLException | InvalidArgumentsException e) {
+			System.out.println(e.getMessage());
+			e.printStackTrace();
+		}
+		return "hello";
+	}
 }

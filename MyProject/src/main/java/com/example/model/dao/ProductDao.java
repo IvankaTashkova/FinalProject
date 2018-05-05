@@ -8,6 +8,7 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import com.example.db.DBManager;
 import com.example.model.Ingredient;
@@ -18,7 +19,7 @@ import com.example.util.InvalidArgumentsException;
 @Component
 public class ProductDao {
 	
-	private Connection connection;
+	private Connection connection = DBManager.getInstance().getConnection();
 	
 	public ProductDao() {
 		connection = DBManager.getInstance().getConnection();
@@ -35,11 +36,10 @@ public class ProductDao {
 					long product_id =  set.getLong("product_id");
 					String name = set.getString("name");
 					Double price = set.getDouble("price");
-					
-					HashSet<Ingredient> ingredients = getProductIngredients(product_id);
-					
-					Product product = new Product(product_id, name, price,ingredients);
+				//	HashSet<Ingredient> ingredients = getProductIngredients(product_id);
+					Product product = new Product(product_id, name, price,new HashSet<>());
 					products.add(product);
+					//ingredients.clear();
 				}
 			}
 		}
