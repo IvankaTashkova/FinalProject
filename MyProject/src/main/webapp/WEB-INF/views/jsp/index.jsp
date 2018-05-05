@@ -4,7 +4,7 @@
     <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
-<title>Domino's Pizza</title>
+<title>Domino's Pizza | Home</title>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <link rel="stylesheet" href="css/css.css">
@@ -48,9 +48,6 @@ h1,h2,h3,h4,h5,h6 {
 <c:forEach var="product" items="${applicationScope.products}">
 	<h4><c:out value="${product.name}"></c:out></h4>
 	<p class="w3-text-grey">
-		<c:forEach var="ingredient" items="product.ingredients">
-			<c:out value="${ingredient.name}"></c:out>,
-		</c:forEach>
 	</p>
 	<h2><c:out value="${product.price}"></c:out></h2>
 	<a href="pizza?id=${product.id}" ><img border="0"src="imges/eCommerce-ICON-small.png" width="20" height="20"></a>		
@@ -59,9 +56,7 @@ h1,h2,h3,h4,h5,h6 {
       <img src="images/image-menu.jpg" class="w3-round w3-image w3-opacity-min" alt="Menu" style="width:100%">
     </div>
   </div>
-
   <hr>
-
   <!-- Contact Section -->
   <div class="w3-container w3-padding-64" id="contact">
     <h1>Contact</h1><br>

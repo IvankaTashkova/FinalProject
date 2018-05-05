@@ -28,8 +28,7 @@ public class MainController {
 			List<Product> products = new ArrayList<>();
 			try {
 				products = productDao.getAllProducts();
-				System.out.println(products);
-			//	ingredients = IngredientDao.getInstance().getAllIngredients();
+				System.out.println("PRODUCTS"+products);
 			} catch (SQLException |InvalidArgumentsException e) {
 				System.out.println(e.getMessage());
 				model.addAttribute("exception", e);
