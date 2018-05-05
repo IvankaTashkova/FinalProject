@@ -33,19 +33,21 @@ public class UserController {
 			HttpSession session) {
 			
 		User user = null;
-		password = BCrypt.hashpw(password, BCrypt.gensalt());
-			try {
-				if(userDao.checkUserData(username, password)) {
-					user = userDao.getUserByUsername(username);
+		//password = BCrypt.hashpw(password, BCrypt.gensalt());
+		try {
+			if(userDao.checkUserExist(username)) {
+				user = userDao.getUserByUsername(username);
+				if(password.equals(user.getPassword())) {
+					session.setAttribute("user", user);
 				}
-			} catch (SQLException | InvalidArgumentsException e) {
-				e.printStackTrace();
-				model.addAttribute("exception",e);
-				return "error";
 			}
-		
+		} catch (SQLException | InvalidArgumentsException e) {
+			e.printStackTrace();
+			model.addAttribute("exception",e);
+			return "error";
+		}
 		if (user == null) {
-			model.addAttribute("error", "You are not logged in.Try again!");
+			model.addAttribute("info", "Wrong username or password!");
 			return "login";
 		} else {
 			session.setAttribute("user", user);
@@ -123,34 +125,38 @@ public class UserController {
 			@RequestParam String confirmpassword,
 			@RequestParam String phoneNumber, 
 			HttpSession session) {
-		password =  BCrypt.hashpw(password, BCrypt.gensalt());
-		confirmpassword = BCrypt.hashpw(confirmpassword, BCrypt.gensalt());
+		//password =  BCrypt.hashpw(password, BCrypt.gensalt());
+		//confirmpassword = BCrypt.hashpw(confirmpassword, BCrypt.gensalt());
 		User user = null;
-		
-		if (password.equals(confirmpassword)) {
-			try {
-				user = new User(username, firstname, lastname, phoneNumber, password, email);
-			} catch (InvalidArgumentsException e) {
-				model.addAttribute("info", "Invalid input data! Please try again!");
-				System.out.println(e.getMessage());
+		try {
+			if(userDao.checkUserExist(username)) {
+				model.addAttribute("info", "Username already taken!");
 				return "register";
 			}
-		}
-		if (user != null) {
-			try {
-				if(userDao.addNewUser(user)) {
-					return "login";
+			else {
+				if (password.equals(confirmpassword)) {
+					user = new User(username, firstname, lastname, phoneNumber, password, email);
+					userDao.addNewUser(user);
+					}
 				}
-				else {
-					model.addAttribute("info", "Your registration failed.Please try again.");
-					return "register";
-				}	
-			} catch (SQLException e) {
-				model.addAttribute("exception",e);
-				return "error";
-			}
+			
+		} catch (SQLException e ) {
+			model.addAttribute("info", "Your registration failed! Please try again!");
+			return "register";
 		}
-		return "register"; 
+		catch (InvalidArgumentsException e) {
+			model.addAttribute("info", "Invalid input data! Please try again!");
+			return "register";
+		}
+		
+		if (user != null) {
+			model.addAttribute("info", "Successful registration! You can now log in!");
+			return "login";
+		}
+		else {
+			model.addAttribute("info", "Your registration failed.Please try again.");
+			return "register";
+		}	
 	}
 	
 	@RequestMapping(value = "/register",method = RequestMethod.GET)

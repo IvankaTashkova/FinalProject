@@ -11,7 +11,7 @@
 <body>
 <div class="w3-top" style = "font-family:Arial">
   <div class="w3-bar w3-white w3-padding w3-card">
-    <a href="home" ><img border="0"src="images/home-icon.png" width="40" height="40"></a>
+    <a href="http://localhost:8080/MyProject/" ><img border="0"src="images/home-icon.png" width="40" height="40"></a>
   </div> 
 </div>
 
@@ -20,14 +20,14 @@
 	<div class = "signin-container" style= "text-align:center">
 		<form action="register" method="post" >
 		<p style="color:red;"><c:out value="${info}"></c:out></p>
-		<h3  style= "background-color: red;border: none;color: white;padding: 5px 150px;text-align: center;display: inline-block;font-size: 18px;border-radius:10px; opacity:0.85;">Sign in</h3>
-		<p><input style = "padding:5px;margin-left:25%;display:block;border:none;border-bottom:1px solid red;width:200px;height:40px;text-align:center;" type="text" placeholder="first name" required name="firstname"></p>
-		  <p><input style = "padding:5px;margin-left:25%;display:block;border:none;border-bottom:1px solid red;width:200px;height:40px;text-align:center;" type="text" placeholder="last name" required name="lastname"></p>
-		  <p><input style = "padding:5px; margin-left:25%;display:block;border:none;border-bottom:1px solid red;width:200px;height:40px;text-align:center;" type="text" placeholder="username" required name="username"></p>
-		  <p><input style = "padding:5px;margin-left:25%;display:block;border:none;border-bottom:1px solid red;width:200px;height:40px;text-align:center;" type="email" placeholder="email" required name="email"></p>
-		   <p><input style = "padding:5px;margin-left:25%;display:block;border:none;border-bottom:1px solid red;width:200px;height:40px;text-align:center;" type="password" placeholder="password" required name="password"></p>
-		  <p><input style = "padding:5px;margin-left:25%;display:block;border:none;border-bottom:1px solid red;width:200px;height:40px;text-align:center;" type="password" placeholder="confirm password" required name="confirmpassword"></p>
-		  <p><input style = "padding:5px;margin-left:25%;display:block;border:none;border-bottom:1px solid red;width:200px;height:40px;text-align:center;" type="text" placeholder="phone number" required name="phoneNumber"></p>
+		<h3  style= "background-color: red;border: none;color: white;padding: 5px 150px;text-align: center;display: inline-block;font-size: 18px;border-radius:10px; opacity:0.70;">Sign in</h3>
+		<p><input style = "padding:5px;margin-left:25%;display:block;border:none;border-bottom:1px solid red;width:200px;height:40px;text-align:center;" type="text" placeholder="first name" required name="firstname" maxlength="45"></p>
+		  <p><input style = "padding:5px;margin-left:25%;display:block;border:none;border-bottom:1px solid red;width:200px;height:40px;text-align:center;" type="text" placeholder="last name" required name="lastname" maxlength="45"></p>
+		  <p><input style = "padding:5px; margin-left:25%;display:block;border:none;border-bottom:1px solid red;width:200px;height:40px;text-align:center;" type="text" placeholder="username" required name="username" maxlength="30"></p>
+		  <p><input style = "padding:5px;margin-left:25%;display:block;border:none;border-bottom:1px solid red;width:200px;height:40px;text-align:center;" type="email" placeholder="email" required name="email" maxlength="55"></p>
+		   <p><input style = "padding:5px;margin-left:25%;display:block;border:none;border-bottom:1px solid red;width:200px;height:40px;text-align:center;" type="password" placeholder="password" required name="password" maxlength="30"></p>
+		  <p><input style = "padding:5px;margin-left:25%;display:block;border:none;border-bottom:1px solid red;width:200px;height:40px;text-align:center;" type="password" placeholder="confirm password" required name="confirmpassword" maxlength="30"></p>
+		  <p><input style = "padding:5px;margin-left:25%;display:block;border:none;border-bottom:1px solid red;width:200px;height:40px;text-align:center;" type="number" placeholder="phone number" required name="phoneNumber" maxlength="15"></p>
 		  <p><button style = " background-color: red;border: none;color: white;padding: 10px 32px;text-align: center;text-decoration: none;display: inline-block;font-size: 16px;  border-radius: 10px; opacity:0.85;" type="submit">Sign in</button></p>
 		</form>
 		<a href="login" style = "color : red;">I already have registration!</a>

@@ -153,7 +153,7 @@ public class UserDao implements IUserDao{
 
 	@Override
 	public boolean checkUserExist(String username) throws SQLException{
-		String sqlCheckUser = "SELECT * FROM users WHERE username = ? ;";
+		String sqlCheckUser = "SELECT user_id FROM users WHERE username = ? ;";
 		try(PreparedStatement ps = connection.prepareStatement(sqlCheckUser)){
 			ps.setString(1, username);
 			ResultSet result = ps.executeQuery();
@@ -165,7 +165,6 @@ public class UserDao implements IUserDao{
 				return true;
 			}
 		} 
-		
 		return false;
 	}
 	

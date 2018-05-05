@@ -18,19 +18,9 @@ public class MainController {
 	@Autowired
 	private ProductDao productDao;
 	
-	@RequestMapping(value = "/",method = RequestMethod.GET)
-	public String products(Model model,ServletContext servletcontext) throws SQLException, ClassNotFoundException {
-		List<Product> products;
-		try {
-			products = productDao.getAllProducts();
-			System.out.println("Products:"+products.toString());
-			model.addAttribute("products", products);
-		} catch (InvalidArgumentsException e) {
-			System.out.println(e.getMessage());
-			model.addAttribute("exception", e);
-			return "error";
-		}
-		
+	@RequestMapping(value = {"/","/home"},method = RequestMethod.GET)
+	public String products(Model model) throws SQLException, ClassNotFoundException {
+				
 		menu(model);
 		
 		if (model.containsAttribute("user")) {
@@ -38,11 +28,6 @@ public class MainController {
 		} else {
 			return "index";
 		}
-	}
-	
-	@RequestMapping(value = "/home",method = RequestMethod.GET)
-	public String home() {
-		return "index";
 	}
 	
 	@RequestMapping(value = "/menu",method = RequestMethod.GET)
