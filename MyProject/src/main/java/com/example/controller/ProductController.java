@@ -5,6 +5,7 @@ import java.time.LocalDateTime;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Map.Entry;
+import java.util.concurrent.ConcurrentHashMap;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
@@ -94,30 +95,31 @@ public class ProductController {
 		return "profile";
 	}
 	
-		@RequestMapping(value = "/removeFav/{productId}", method = RequestMethod.POST)
-		public String removeFromFavorites(@PathVariable("productId") String productId, Model model, HttpServletRequest request) {
-			if (request.getSession().getAttribute("user") == null) {
-				return "login";
+	@RequestMapping(value = "/favorite/remove/{productId}", method = RequestMethod.GET)
+	public String removeFromFavorites(@PathVariable("productId") String productId, Model model, HttpSession session) {
+		if (session.getAttribute("user") == null) {
+			return "login";
+		}
+		else {
+			User user = (User) session.getAttribute("user");
+			HashSet<Product> favorites = new HashSet<>();
+			Product product = null;
+			try {
+				product = productDao.getProductById(Long.parseLong(productId));
+			} catch (NumberFormatException | SQLException | InvalidArgumentsException e) {
+				e.printStackTrace();
+				model.addAttribute("exception", e);
+				return "error";
 			}
-			else {
-				Product product;
-				try {
-					product = productDao.getProductById(Integer.parseInt(productId));
-				} catch (NumberFormatException | SQLException | InvalidArgumentsException e) {
-					return "error";
-				}
-				HttpSession session = request.getSession();
-					User user = (User) session.getAttribute("user");
-					
-				try {
-					if(userDao.checkIfFavoriteProduct(user, product.getId())){
-						userDao.deleteProductFromFavorites(user, product.getId());
-						model.addAttribute("products", product);
-					}
-				} catch (SQLException e) {
-					return "error";
-				}
+			favorites.addAll((HashSet)session.getAttribute("favorites"));
+			if(favorites.contains(product)) {
+				user.removeFromFavorite(product);
+				favorites.remove(product);
+				model.addAttribute("info", "Removed from favorite products!");
 			}
-			return "menu";
+			model.addAttribute("favorites", favorites);
+			session.setAttribute("favorites", favorites);
+		}
+		return "profile";	
 		}
 }

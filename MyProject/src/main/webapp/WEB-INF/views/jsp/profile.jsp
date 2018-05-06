@@ -130,7 +130,7 @@
 			<tr>
 			<td><c:out value="${item.name}"></c:out></td>
 			<td><c:out value="${item.price}"></c:out></td>
-			<td>Remove</td>
+			<td><a href = "/MyProject/favorite/remove/${item.id}">Remove</a></td>
 			</tr>
 		</c:forEach>
 	</table>

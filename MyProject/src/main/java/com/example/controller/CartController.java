@@ -93,8 +93,9 @@ public class CartController {
 		try {
 			product = productDao.getProductById(Long.parseLong(productId));
 		} catch (NumberFormatException | SQLException | InvalidArgumentsException e) {
-			System.out.println("exception");
 			e.printStackTrace();
+			model.addAttribute("exception", e);
+			return "error";
 		}
 		cart.putAll((Map<Product, Integer>)session.getAttribute("cart"));
 		if(isExist(Long.parseLong(productId), cart)) {
