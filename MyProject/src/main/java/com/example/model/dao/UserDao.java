@@ -51,11 +51,11 @@ public class UserDao implements IUserDao{
 	
 	
 	@Override
-	public User getUserById(int id) throws SQLException, InvalidArgumentsException{
+	public User getUserById(long id) throws SQLException, InvalidArgumentsException{
 		User user = null;
 		String sqlSelectUser = "SELECT user_id,first_name,last_name,email,phone_number,username,password FROM users WHERE user_id = ? ;";
 		try(PreparedStatement ps = connection.prepareStatement(sqlSelectUser)){
-			ps.setInt(1, id);
+			ps.setLong(1, id);
 			ResultSet result = ps.executeQuery();
 			while (result.next()) {
 				String firstName = result.getString("first_name");

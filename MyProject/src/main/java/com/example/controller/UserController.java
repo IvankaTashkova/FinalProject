@@ -92,13 +92,23 @@ public class UserController {
 		return "profile";
 	}*/
 
-	@RequestMapping(value = "/profile/{id}",method = RequestMethod.GET)
+	@RequestMapping(value = "/profile/update/{id}",method = RequestMethod.GET)
 	public String getProfile(@PathVariable (value = "id") long id,Model model,HttpSession session) {
-		
-		return "profile";
+		User user = null;
+		try {
+			user = userDao.getUserById(id);
+		} catch (SQLException | InvalidArgumentsException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		if (user == null) {
+			return "login";
+		}
+		model.addAttribute("user", user);
+		return "/profile";
 	}
 	
-	@RequestMapping(value = "/profile/{id}",method = RequestMethod.POST)
+	@RequestMapping(value = "/profile/update/{id}",method = RequestMethod.POST)
 	public String updateProfile(Model model,
 			@PathVariable (value = "id") long id,
 			@RequestParam String firstname, 
@@ -109,23 +119,38 @@ public class UserController {
 			@RequestParam String confirmpassword,
 			@RequestParam String phoneNumber, 
 			HttpSession session) {
-		User user = (User) session.getAttribute("user");
+		User user = null;
+		try {
+			user = userDao.getUserById(id);
+		} catch (SQLException | InvalidArgumentsException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
 		//password = BCrypt.hashpw(password, BCrypt.gensalt());
 		//confirmpassword = BCrypt.hashpw(confirmpassword, BCrypt.gensalt());
 		if (password.equals(confirmpassword) && user != null) {
+			firstname = (firstname.isEmpty()) ? user.getFirstName() : firstname;
+			lastname = (lastname.isEmpty()) ? user.getLastName() : lastname;
+			username = (username.isEmpty()) ? user.getUsername() : username;
+			password = (password.isEmpty()) ? user.getPassword() : password;
+			email = (email.isEmpty()) ? user.getEmail() : email;
+			phoneNumber = (phoneNumber.isEmpty()) ? user.getPhoneNumber() : phoneNumber;
+			
 			try {
-				user.setFirstName((firstname == null) ? user.getFirstName() : firstname);
-				user.setLastName((lastname == null) ? user.getFirstName() : lastname);
-				user.setUsername((username == null) ? user.getFirstName() : username);
-				user.setPassword((password == null) ? user.getFirstName() : password);
-				user.setEmail((email == null) ? user.getFirstName() : email);
-				user.setPhoneNumber((phoneNumber == null) ? user.getFirstName() : phoneNumber);
+				user.setFirstName(firstname);
+				user.setLastName(lastname);
+				user.setUsername(username);
+				user.setPassword(password);
+				user.setEmail(email);
+				user.setPhoneNumber(phoneNumber);
 				user.setId(id);
 				userDao.updateUser(user);
 				model.addAttribute("info","Changes saved!");	
 				session.setAttribute("user", user);
+				return "profile";
 			} catch (InvalidArgumentsException | SQLException e) {
 				model.addAttribute("info","Incorrect data! Try again!");
+				e.getStackTrace();
 				System.out.println(e.getMessage());
 				return "profile"; 
 			}
@@ -134,8 +159,6 @@ public class UserController {
 			model.addAttribute("info", "Passwords don't match!");
 			return "profile";
 		}
-		model.addAttribute("info", "Invalid user");
-		return "profile";
 	}
 	
 	@RequestMapping(value = "/register",method = RequestMethod.POST)

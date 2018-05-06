@@ -11,7 +11,7 @@ public interface IUserDao {
 	
 	public List<User> getAllUsers() throws SQLException, InvalidArgumentsException;
 	
-	public User getUserById(int id) throws SQLException, InvalidArgumentsException;
+	public User getUserById(long id) throws SQLException, InvalidArgumentsException;
 	
 	public User getUserByUsername(String username) throws SQLException, InvalidArgumentsException;
 	

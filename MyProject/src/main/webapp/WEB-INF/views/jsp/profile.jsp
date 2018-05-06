@@ -81,7 +81,7 @@
 </div>
 <div id="#profile" style = " margin: auto; text-align:center;">
 <p style = "color:red;"><c:out value=" ${info}"></c:out></p>
-	<form action = "profile" method = "get">
+	<form action = "profile/update/${user.id}" method = "post">
 	<img src="images/user-icon.png" width = "80" style = "margin-top:5px;opacity:1;possition:center;display: block;margin-top:150px;margin-left: auto; margin-right: auto;"><h3 style= "border: none;color: black;padding: 10px 150px;display: inline-block;font-size: 18px;  border-radius: 10px;">Profile</h3>
 	<%  User user  = (User) session.getAttribute("user"); %>
 	<table style = "margin: auto;">
@@ -107,7 +107,7 @@
 					<td>Phone:<input type="text" placeholder="<%= user.getPhoneNumber()%>" name = "phoneNumber"></td>
 	</tr>		
 	<tr>
-					<td><a href = "profile/${user.id}" style = "background-color:red;color:white;border:none;border-radius:5px;height:50px;opacity:0.75;">Save changes</a></td>
+					<td><input type="submit" value= "Save changes" style = "background-color:red;color:white;border:none;border-radius:5px;height:50px;opacity:0.75;"></td>
 	</tr>		
 	</table>
 	</form>

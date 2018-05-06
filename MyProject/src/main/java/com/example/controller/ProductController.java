@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import com.example.model.Ingredient;
 import com.example.model.Product;
+import com.example.model.Size;
 import com.example.model.User;
 import com.example.model.dao.ProductDao;
 import com.example.model.dao.UserDao;
@@ -40,6 +41,8 @@ public class ProductController {
 		}
 		session.setAttribute("pizza", pizza);
 		session.setAttribute("ingredients", ingredients);
+	//	model.addAttribute("size", new Size());
+	 //	model.addAttribute("dough", new Dough());
 		return "pizza";
 	}
 	
