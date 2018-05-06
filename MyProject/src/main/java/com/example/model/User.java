@@ -4,6 +4,8 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
+import java.util.Map.Entry;
+import java.util.concurrent.ConcurrentHashMap;
 
 import com.example.util.InvalidArgumentsException;
 
@@ -34,7 +36,7 @@ public class User {
 	private String email;
 
 	//user shopping cart
-	private HashMap<Product, Integer> cart = new HashMap<>();
+	private ConcurrentHashMap<Product, Integer> cart = new ConcurrentHashMap<>();
 
 	public User(String username, String firstName, String lastName, String phoneNumber, String password, String email) throws InvalidArgumentsException {
 		setUsername(username);
@@ -142,11 +144,15 @@ public class User {
 	}
 	
 	public void removeProductFromShoppingCart(Product product) {
-		Iterator<Product> it = this.cart.keySet().iterator();
-		while (it.hasNext()) {
-			Product prod = it.next();
-			if(product.equals(prod)) {
-				it.remove();
+		for (Entry<Product, Integer> entry : this.cart.entrySet()) {
+			if(entry.getKey().equals(product)) {
+				int quantity = entry.getValue();
+				if(quantity == 1) {
+					this.cart.remove(product);
+				}
+				else {
+					this.cart.put(product, quantity-1);
+				}
 			}
 		}
 	}

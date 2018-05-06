@@ -19,7 +19,7 @@
 		  <p><input type="text" placeholder="username" required name="username" maxlength="30" style="opacity:0.80;height:40px;border: none;border-bottom: 2px solid red;"></p>
 		  <p><input type="password" placeholder="password" required name="password" maxlength="30" style="opacity:0.80;height:40px;border: none;border-bottom: 2px solid red;"></p>
 		  <p><input type= "submit" value = "Log in" style = " opacity:0.80; background-color: red;border: none;color: white; font-size: 18px;  border-radius: 15px; height:35px;"></p>
-		  <p><a href = "register" style = "color : red;">I don't have registration! </a></p>
+		  <p><a href = "register" style = "color : white;">I don't have registration! </a></p>
 		</form>
 	</div>
 </body>

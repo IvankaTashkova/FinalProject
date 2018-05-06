@@ -7,6 +7,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
+import java.util.concurrent.ConcurrentHashMap;
 import javax.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -41,63 +42,76 @@ public class CartController {
 	@RequestMapping(value = "/cart/add/{productId}", method = RequestMethod.GET)
 	protected String getCart(HttpSession session,@PathVariable (value = "productId") String productId,Model model) {
 		User user = (User) session.getAttribute("user");
-		Map<Product, Integer> cart = new HashMap();
-		if (session.getAttribute("cart") == null) {
-			try {
-				user.addProductToShoppingCart(productDao.getProductById(Long.parseLong(productId)), 1);
-				cart = user.getCart();
-			} catch (NumberFormatException | SQLException | InvalidArgumentsException e) {
-				System.out.println(e.getMessage());
-			}			
+		ConcurrentHashMap<Product, Integer> cart = new ConcurrentHashMap();
+		Product product = null;
+		try {
+			product = productDao.getProductById(Long.parseLong(productId));
+		} catch (SQLException | InvalidArgumentsException e) {
+			e.printStackTrace();
 		}
-		else {
-			cart.putAll((Map<Product, Integer>)session.getAttribute("cart"));
-			try {
+		if(product != null) {
+			if (session.getAttribute("cart") == null) {
+				user.addProductToShoppingCart(product, 1);
+				cart.putAll(user.getCart());			
+			}
+			else {
+				cart.putAll((Map<Product, Integer>)session.getAttribute("cart"));
 				if(isExist(Long.parseLong(productId), cart)) {
 					for (Entry<Product, Integer> entry : cart.entrySet()) {
-						if(entry.getKey().equals(productDao.getProductById(Long.parseLong(productId)))) {
+						if(entry.getKey().equals(product)) {
 							int quantity = entry.getValue();
-							cart.put(productDao.getProductById(Long.parseLong(productId)), quantity+1);
+							user.addProductToShoppingCart(product, quantity+1);
+							cart.put(product, quantity+1);
 						}
 					}
 				}
 				else {
-					cart.put(productDao.getProductById(Long.parseLong(productId)), 1);
-					user.addProductToShoppingCart(productDao.getProductById(Long.parseLong(productId)), 1);
+					cart.put(product, 1);
+					user.addProductToShoppingCart(product, 1);
 				}
-			} catch (NumberFormatException | SQLException | InvalidArgumentsException e) {
-				System.out.println(e.getMessage());
-			}
-		}	
-			session.setAttribute("cart", cart);
+			}	
+			session.setAttribute("user", user);
 			Order order = new Order(calculatePrice(cart), LocalDateTime.now(), cart);
+			session.setAttribute("cart", cart);
 			session.setAttribute("order", order);
-			return "shoppingcart";
+			model.addAttribute("cart", cart);
+			return "profile";
+		}
+		else {
+			model.addAttribute("info", "nullproduct");
+			return "profile";
+		}
 		
 	}
 	@RequestMapping(value = "/cart/delete/{productId}", method = RequestMethod.GET)
 	protected String delete(HttpSession session,@PathVariable (value = "productId") String productId,Model model) {
 		User user = (User) session.getAttribute("user");
-		Map<Product, Integer> cart = new HashMap();
+		ConcurrentHashMap<Product, Integer> cart = new ConcurrentHashMap<>();
+		Product product = null;
+		try {
+			product = productDao.getProductById(Long.parseLong(productId));
+		} catch (NumberFormatException | SQLException | InvalidArgumentsException e) {
+			System.out.println("exception");
+			e.printStackTrace();
+		}
 		cart.putAll((Map<Product, Integer>)session.getAttribute("cart"));
 		if(isExist(Long.parseLong(productId), cart)) {
+			user.removeProductFromShoppingCart(product);
 			for (Entry<Product, Integer> entry : cart.entrySet()) {
-				try {
-					if(entry.getKey().equals(productDao.getProductById(Long.parseLong(productId)))) {
-						int quantity = entry.getValue();
-						if(quantity == 1) {
-							cart.remove(productDao.getProductById(Long.parseLong(productId)));
-						}
-						else {
-							cart.put(productDao.getProductById(Long.parseLong(productId)), quantity-1);
-						}
+				if(entry.getKey().equals(product)) {
+					int quantity = entry.getValue();
+					if(quantity == 1) {
+						cart.remove(product);
 					}
-				} catch (NumberFormatException | SQLException | InvalidArgumentsException e) {
-					System.out.println(e.getMessage());
+					else {
+						cart.put(product, quantity-1);
+					}
 				}
 			}
-		}		
-		return "shoppingcart";
+		}
+		model.addAttribute("cart", cart);
+		session.setAttribute("cart", cart);
+		return "profile";
 	}
 	
 	private boolean isExist(long id,Map<Product, Integer> cart) {

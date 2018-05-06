@@ -9,7 +9,7 @@
 </head>
 <style>
 body{
-background-image: url('images/error.png');
+background-image: url('/MyProject/images/error.png');
 background-repeat:no-repeat;
 background-size:cover;
 }
@@ -17,6 +17,6 @@ background-size:cover;
 <body>
 		<h1>We are sorry,something went wrong!</h1>
 		<h2><c:out value="${requestScope.exception.message}"></c:out></h2>
-		<p>Back to <a href="home">home page!</a></p>
+		<p>Back to <a href="/MyProject/">home page!</a></p>
 </body>
 </html>

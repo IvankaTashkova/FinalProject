@@ -18,14 +18,14 @@ public class Product {
 		setName(name);
 		setPrice(price);
 		setIngredients(ingredients);
-		setImgUrl(name.toLowerCase()+".jpg");
+		setImgUrl(name.toLowerCase()+".png");
 		setSize(Size.BIG);
 	}
 	
 	public Product(long id,String name, double price, HashSet<Ingredient> ingredients) throws InvalidArgumentsException {
 		this(name,price,ingredients);
 		setId(id);
-		setImgUrl(name.toLowerCase()+".jpg");
+		setImgUrl(name.toLowerCase()+".png");
 		setSize(Size.BIG);
 	}
 	

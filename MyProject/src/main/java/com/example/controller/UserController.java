@@ -72,6 +72,7 @@ public class UserController {
 			return "login";
 		}
 		model.addAttribute("user", user);
+		model.addAttribute("cart", session.getAttribute("cart"));
 		return "profile";
 	}
 	/*

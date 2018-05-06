@@ -4,11 +4,12 @@
     pageEncoding="ISO-8859-1"%>
     <%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
         <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+        <%  User user  = (User) session.getAttribute("user"); %>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-<link rel="stylesheet" href="css/css.css">
+<link rel="stylesheet" href="/MyProject/css/css.css">
 <title>DominosPizza | My profile</title>
 <style>
 
@@ -21,11 +22,10 @@
     left: 0;
     background-color: red;
     overflow-x: hidden;
-    padding-top: 200px;
-    opacity:0.75;
+    padding-top: 100px;
 }
 
-.sidenav button {
+.sidenav a {
 	background-color:red;
 	border:0;
     padding: 6px 8px 6px 16px;
@@ -36,7 +36,7 @@
     opacity:0.75;
 }
 
-.onclick button {
+.onclick a {
 	background-color:white;
 	border:0;
     padding: 6px 8px 6px 16px;
@@ -47,7 +47,7 @@
     opacity:0.75;
 }
 
-.sidenav button:hover {
+.sidenav a:hover {
     background-color:white;
     color:red;
     border:0;
@@ -63,27 +63,30 @@
 <body>
 
 <div class="sidenav">
-  <button href = "#profile">Edit profile</button>
- <button href = "#orders">View Orders<button>
- <button href = "#cart">Shopping Cart<button>
- <button href = "addresses">My addresses<button>
+	<img src="/MyProject/images/user-icon.png" width = "80" style = "margin-top:5px;opacity:1;possition:center;display: block;margin-top:50px;margin-left: auto; margin-right: auto;">
+ 	<h3 style= "display: block;opacity:0.75;border: none;padding: 6px 8px 6px 16px;color: white;font-size: 20px;text-align:center;"><%= user.getFirstName()%> <%= user.getLastName()%></h3>
+   <a href = "/MyProject/profile#profile">Edit profile</a>
+  <a href = "/MyProject/profile#favorite">Favorite</a>
+ <a href = "/MyProject/profile#cart">Shopping Cart</a>
+ <a href = "/MyProject/profile#orders">View Orders</a>
+ <a href = "/MyProject/profile#addresses">My addresses</a>
 </div>
 <div class="w3-top" style = "font-family:Arial">
   <div class="w3-bar w3-white w3-padding w3-card">
-    <a href="home" ><img border="0"src="images/home-icon.png" width="40" height="40"></a>
+    <a href="/MyProject/home" ><img border="0"src="/MyProject/images/home-icon.png" width="40" height="40"></a>
     <!-- Right-sided navbar links. Hide them on small screens -->
     <div class="w3-right w3-hide-small" style = "font-family:Arial">
-      <a href="profile"><img src = "images/user-icon.png" width = "25" height = "25" style = "margin-top:0px; margin-bottom:0;"></a>
-      <a href="#menu" class="w3-bar-item w3-button">Menu</a>
-      <form action = "logout" method = "post"><input type= "submit" class="w3-bar-item w3-button" value = "Logout"></form>
+      <a href="/MyProject/profile"><img src = "/MyProject/images/user-icon.png" width = "25" height = "25" style = "margin-top:0px; margin-bottom:0;"></a>
+      <a href="/MyProject/home#menu" class="w3-bar-item w3-button">Menu</a>
+      <form action = "/MyProject/logout" method = "post"><input type= "submit" class="w3-bar-item w3-button" value = "Logout"></form>
     </div>
   </div> 
 </div>
-<div id="#profile" style = " margin: auto; text-align:center;">
+<div id="profile" style = " margin: auto; text-align:center;">
 <p style = "color:red;"><c:out value=" ${info}"></c:out></p>
-	<form action = "profile/update/${user.id}" method = "post">
-	<img src="images/user-icon.png" width = "80" style = "margin-top:5px;opacity:1;possition:center;display: block;margin-top:150px;margin-left: auto; margin-right: auto;"><h3 style= "border: none;color: black;padding: 10px 150px;display: inline-block;font-size: 18px;  border-radius: 10px;">Profile</h3>
-	<%  User user  = (User) session.getAttribute("user"); %>
+<h3 style= "margin-top:100px;border: none;color: black;padding: 10px 150px;display: inline-block;font-size: 18px;  border-radius: 10px;">Profile</h3>
+<div style= "margin:auto;border:1px solid red;padding:10px;text-align:center;width:50%">
+	<form action = "/MyProject/profile/update/${user.id}" method = "post">	
 	<table style = "margin: auto;">
 	<tr>
 					<td>First name:<input type="text" placeholder="<%= user.getFirstName()%>" name = "firstname"></td>
@@ -111,11 +114,82 @@
 	</tr>		
 	</table>
 	</form>
+	</div>
 </div>
-
-
-<div id="view_orders" style = " margin: auto; text-align:center;">
+<hr>
+<div id="favorite" style = " margin: auto; text-align:center;">
+<h3 style= "border: none;color: black;padding: 10px 150px;display: inline-block;font-size: 18px;  border-radius: 10px;">Favorite products</h3>
+<div style= "margin:auto;border:1px solid red;padding:10px;text-align:center;width:50%">
+	<table border="0" style = "margin: auto;">
+		<tr>
+			<th>Name</th>
+			<th>Ingredients</th>
+			<th>Size</th>
+			<th>Price</th>
+			<th>Quantity</th>
+			<th>Total</th>
+			<th></th>
+		</tr>
+		<c:forEach var="item" items="${cart}">
+			<tr>
+			</tr>
+		</c:forEach>
+	</table>
+</div>
+</div>
+<hr>
+<div id="cart" style = " margin: auto; text-align:center;">
+<h3 style= "border: none;color: black;padding: 10px 150px;display: inline-block;font-size: 18px;  border-radius: 10px;">Shopping cart</h3>
+	<div style= "margin:auto;border:1px solid red;padding:10px;text-align:center;width:50%">
+	<table border="0" style = "margin: auto;">
+		<tr>
+			<th>Name</th>
+			<th>Size</th>
+			<th>Dough</th>
+			<th>Price</th>
+			<th>Quantity</th>
+			<th>Total</th>
+			<th></th>
+		</tr>
+		<c:set var="sum" value = "0"></c:set>
+		<c:forEach var="item" items="${cart}">
+		<c:set var = "sum" value="${sum + item.key.price*item.value}"></c:set>
+			<tr>
+				<td><c:out value="${item.key.name}"></c:out></td>
+				<td><c:out value="${item.key.size}"></c:out> </td>
+				<td>
+				</td>
+				<td><c:out value="${ item.key.price }"></c:out></td>
+				<td align="center"><c:out value="${ item.value }"></c:out></td>
+				<td align="center"><c:out value="${ item.key.price*item.value }"></c:out></td>
+				<td>
+					<a href = "/MyProject/cart/delete/${item.key.id}">Delete</a>						
+				</td>
+			</tr>
+		</c:forEach>
+		<tr>
+			<td colspan = "6" align = "right">Sum:<c:out value = "${sum }"></c:out></td>
+			</tr>
+			
+</table>
+<a href = "/MyProject/home">Continue shopping</a> 
+<p style = "padding-left:350px;"><button href="makeorder" align = "right">Order now</button></p>
+</div>
+</div>
+<hr>
+<div id="orders" style = " margin: auto; text-align:center;">
+<h3 style= "border: none;color: black;padding: 10px 150px;display: inline-block;font-size: 18px;  border-radius: 10px;">Orders</h3>
+<div style= "margin:auto;border:1px solid red;padding:10px;text-align:center;width:50%">
 
 </div>
+</div>
+<hr>
+<div id="addresses" style = " margin: auto; text-align:center;">
+<h3 style= "border: none;color: black;padding: 10px 150px;display: inline-block;font-size: 18px;  border-radius: 10px;">My addresses</h3>
+<div style= "margin:auto;border:1px solid red;padding:10px;text-align:center;width:50%">
+
+</div>
+</div>
+<hr>
 </body>
 </html>

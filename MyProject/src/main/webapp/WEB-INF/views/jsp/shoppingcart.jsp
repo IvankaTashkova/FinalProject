@@ -5,7 +5,7 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
-<title>DominosPizza|Shopping Cart</title>
+<title>Domino's Pizza | Shopping Cart</title>
 </head>
 <body>
 <table border="0">
@@ -40,7 +40,7 @@
 			</tr>
 			
 </table>
-<a href = "menu.jsp">Continue shopping</a> 
+<a href = "/MyProject/home">Continue shopping</a> 
 <p style = "padding-left:350px;"><button href="makeorder" align = "right">Order now</button></p>
 </body>
 </html>

@@ -152,7 +152,7 @@ hr{border:0;border-top:1px solid #eee;margin:20px 0}
 .login{
 	margin-top:70px;
 	background-color: white; 
-	background-image : url("login.jpg");
+	background-image : url("/MyProject/images/login.jpg");
 	opacity:0.8; 
 	color: white;
 	padding: 5px 100px;
@@ -164,6 +164,7 @@ hr{border:0;border-top:1px solid #eee;margin:20px 0}
 	position:relative;
 }
 .signin-container{
+	background-image : url("/MyProject/images/login.jpg");
 	margin:auto;
 	width:400px;
 	height:550px;
@@ -171,6 +172,8 @@ hr{border:0;border-top:1px solid #eee;margin:20px 0}
 	background-color: white;
 	text-align:center;
 	opacity : 0.85;
+	display: inline-block;
+	position:relative;
 }
 .pizza{
 	margin:auto;

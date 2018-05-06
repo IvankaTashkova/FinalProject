@@ -47,31 +47,32 @@ public class ProductController {
 	}
 	
 	@RequestMapping(value = "/addFav/{productId}", method = RequestMethod.POST)
-		public String addToFavorites(@PathVariable("productId") String productId, Model model, HttpServletRequest request) {
-			if (request.getSession().getAttribute("user") == null) {
+		public String addToFavorites(@PathVariable("productId") String productId, Model model, HttpSession session) {		
+		if (session.getAttribute("user") == null) {
 				return "login";
 		}
-			else {
-				Product product;
-				try {
-					product = productDao.getProductById(Integer.parseInt(productId));
-				} catch (NumberFormatException | SQLException | InvalidArgumentsException e) {
-					return "error";
-				}
-				HttpSession session = request.getSession();
-					User user = (User) session.getAttribute("user");
-					
-				try {
-					if(!userDao.checkIfFavoriteProduct(user, product.getId())){
-						userDao.addFavoriteProduct(user, product.getId());
-						model.addAttribute("products", product);
-					}
-				} catch (SQLException e) {
-					return "error";
-				}
+		else {
+			Product product = null;
+			try {
+				product = productDao.getProductById(Long.parseLong(productId));
+			} catch (NumberFormatException | SQLException | InvalidArgumentsException e) {
+				model.addAttribute("exception", e);
+				return "error";
 			}
-			return "menu";
+			User user = (User) session.getAttribute("user");	
+			try {
+				if(!userDao.checkIfFavoriteProduct(user, product.getId())){
+					userDao.addFavoriteProduct(user, product.getId());
+					model.addAttribute("product", product);
+				}
+			} catch (SQLException e) {
+				e.printStackTrace();
+				model.addAttribute("exception", e);
+				return "error";
+			}
 		}
+		return "profile";
+	}
 	
 		@RequestMapping(value = "/removeFav/{productId}", method = RequestMethod.POST)
 		public String removeFromFavorites(@PathVariable("productId") String productId, Model model, HttpServletRequest request) {
