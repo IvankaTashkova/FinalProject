@@ -1,7 +1,11 @@
 package com.example.controller;
 
 import java.sql.SQLException;
+import java.time.LocalDateTime;
 import java.util.HashSet;
+import java.util.Map;
+import java.util.Map.Entry;
+
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,6 +15,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import com.example.model.Ingredient;
+import com.example.model.Order;
 import com.example.model.Product;
 import com.example.model.Size;
 import com.example.model.User;
@@ -46,31 +51,46 @@ public class ProductController {
 		return "pizza";
 	}
 	
-	@RequestMapping(value = "/addFav/{productId}", method = RequestMethod.POST)
+	@RequestMapping(value = "/favorite/add/{productId}", method = RequestMethod.GET)
 		public String addToFavorites(@PathVariable("productId") String productId, Model model, HttpSession session) {		
 		if (session.getAttribute("user") == null) {
 				return "login";
 		}
 		else {
+			User user = (User) session.getAttribute("user");
 			Product product = null;
+			HashSet<Product>favorites =  new HashSet<>();
 			try {
 				product = productDao.getProductById(Long.parseLong(productId));
 			} catch (NumberFormatException | SQLException | InvalidArgumentsException e) {
 				model.addAttribute("exception", e);
-				return "error";
-			}
-			User user = (User) session.getAttribute("user");	
-			try {
-				if(!userDao.checkIfFavoriteProduct(user, product.getId())){
-					userDao.addFavoriteProduct(user, product.getId());
-					model.addAttribute("product", product);
-				}
-			} catch (SQLException e) {
 				e.printStackTrace();
-				model.addAttribute("exception", e);
 				return "error";
 			}
-		}
+			if(product != null) {
+				if (session.getAttribute("favorites") == null) {
+					user.addToFavorite(product);;
+					favorites.addAll(user.getFavorites());			
+				}
+				else {
+					favorites.addAll((HashSet)session.getAttribute("favorites"));
+					if(!favorites.contains(product)) {
+						user.addToFavorite(product);
+						favorites.add(product);
+						
+						model.addAttribute("info", "Added to favorite products!");
+					}
+					else {
+						model.addAttribute("info", "Already added to favorite products!");
+						return "/pizza/"+productId;
+					}
+				}
+			}
+			session.setAttribute("user", user);
+			session.setAttribute("favorites", favorites);
+			model.addAttribute("favorites", favorites);
+		}	
+		
 		return "profile";
 	}
 	

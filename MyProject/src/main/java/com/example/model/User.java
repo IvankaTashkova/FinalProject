@@ -2,9 +2,11 @@
 
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Map;
 import java.util.Map.Entry;
+import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 
 import com.example.util.InvalidArgumentsException;
@@ -37,6 +39,7 @@ public class User {
 
 	//user shopping cart
 	private ConcurrentHashMap<Product, Integer> cart = new ConcurrentHashMap<>();
+	private HashSet<Product> favorites =  new HashSet<>();
 
 	public User(String username, String firstName, String lastName, String phoneNumber, String password, String email) throws InvalidArgumentsException {
 		setUsername(username);
@@ -134,7 +137,7 @@ public class User {
 		}
 	}
 	
-	public void addProductToShoppingCart(Product product, int count) {
+	public void addToShoppingCart(Product product, int count) {
 		if(this.cart.containsKey(product)) {
 			cart.put(product, this.cart.get(product) + count);
 		}
@@ -159,5 +162,21 @@ public class User {
 
 	public Map<Product, Integer> getCart() {
 		return Collections.unmodifiableMap(cart);
+	}
+	
+	public Set<Product> getFavorites() {
+		return Collections.unmodifiableSet(favorites);
+	}
+	
+	public void addToFavorite(Product product) {
+		if(!this.favorites.contains(product)) {
+			this.favorites.add(product);
+		}
+	}
+	
+	public void removeFromFavorite(Product product) {
+		if(this.favorites.contains(product)) {
+			this.favorites.remove(product);
+		}
 	}
 }

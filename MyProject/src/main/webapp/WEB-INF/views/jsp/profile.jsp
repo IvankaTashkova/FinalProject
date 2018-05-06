@@ -123,15 +123,14 @@
 	<table border="0" style = "margin: auto;">
 		<tr>
 			<th>Name</th>
-			<th>Ingredients</th>
-			<th>Size</th>
 			<th>Price</th>
-			<th>Quantity</th>
-			<th>Total</th>
 			<th></th>
 		</tr>
-		<c:forEach var="item" items="${cart}">
+		<c:forEach var="item" items="${favorites}">
 			<tr>
+			<td><c:out value="${item.name}"></c:out></td>
+			<td><c:out value="${item.price}"></c:out></td>
+			<td>Remove</td>
 			</tr>
 		</c:forEach>
 	</table>

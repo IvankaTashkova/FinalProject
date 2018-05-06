@@ -10,6 +10,7 @@
 </head>
 <body>
 <div style= "margin:auto;border:1px solid red;padding:10px;text-align:center;width:50%">
+<p style= "color:red"><c:out value="${info}"></c:out></p>
 <h4><c:out value="${sessionScope.pizza.name}"></c:out> </h4>
 <img  src="/MyProject/images/<c:out value ="${sessionScope.pizza.imgUrl}"></c:out>">
 <br>
@@ -34,7 +35,7 @@
 		 <option value="philadelphia">with Philadelphia</option>
 	</select> 
 	<a href="/MyProject/cart/add/${pizza.id}" ><img border="0"src="/MyProject/images/eCommerce-ICON-small.png" width="20" height="20"></a>
-	<a href="/MyProject/addFav/add/${pizza.id}" ><img border="0"src="/MyProject/images/heart.png" width="20" height="20"></a>
+	<a href="/MyProject/favorite/add/${pizza.id}" ><img border="0"src="/MyProject/images/heart.png" width="20" height="20"></a>
 </form>
 </div>
 </body>

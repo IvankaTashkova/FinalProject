@@ -48,10 +48,12 @@ public class CartController {
 			product = productDao.getProductById(Long.parseLong(productId));
 		} catch (SQLException | InvalidArgumentsException e) {
 			e.printStackTrace();
+			model.addAttribute("exception", e);
+			return "error";
 		}
 		if(product != null) {
 			if (session.getAttribute("cart") == null) {
-				user.addProductToShoppingCart(product, 1);
+				user.addToShoppingCart(product, 1);
 				cart.putAll(user.getCart());			
 			}
 			else {
@@ -60,14 +62,14 @@ public class CartController {
 					for (Entry<Product, Integer> entry : cart.entrySet()) {
 						if(entry.getKey().equals(product)) {
 							int quantity = entry.getValue();
-							user.addProductToShoppingCart(product, quantity+1);
+							user.addToShoppingCart(product, quantity+1);
 							cart.put(product, quantity+1);
 						}
 					}
 				}
 				else {
 					cart.put(product, 1);
-					user.addProductToShoppingCart(product, 1);
+					user.addToShoppingCart(product, 1);
 				}
 			}	
 			session.setAttribute("user", user);

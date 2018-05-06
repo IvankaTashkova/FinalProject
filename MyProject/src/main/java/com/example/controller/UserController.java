@@ -71,6 +71,7 @@ public class UserController {
 		if (user == null) {
 			return "login";
 		}
+		model.addAttribute("favorites", session.getAttribute("favorites"));
 		model.addAttribute("user", user);
 		model.addAttribute("cart", session.getAttribute("cart"));
 		return "profile";
