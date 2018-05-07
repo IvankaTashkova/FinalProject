@@ -7,19 +7,19 @@
 <title>Domino's Pizza | Login</title>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<link rel="stylesheet" href="css/css.css">
+<link rel="stylesheet" href="/MyProject/css/css.css">
 <body>
 <div class="w3-bar w3-white w3-padding w3-card">
-    <a href="http://localhost:8080/MyProject/" ><img border="0"src="images/home-icon.png" width="40" height="40"></a>
+    <a href="/MyProject/" ><img border="0"src="/MyProject/images/home-icon.png" width="40" height="40"></a>
  </div> 
  <div class = "login">
-	<form action="login" method = "post">
+	<form action="/MyProject/login" method = "post">
 		<p style="color:red;"><c:out value="${info}"></c:out></p>
 		<h3 style= "background-color: red; margin-top:50px;margin-left:-20px;opacity:0.80; border: none;color: white;padding: 5px 150px;text-align: center;display: inline-block;font-size: 18px;  border-radius: 15px;">Log in</h3>
 		  <p><input type="text" placeholder="username" required name="username" maxlength="30" style="opacity:0.80;height:40px;border: none;border-bottom: 2px solid red;"></p>
 		  <p><input type="password" placeholder="password" required name="password" maxlength="30" style="opacity:0.80;height:40px;border: none;border-bottom: 2px solid red;"></p>
 		  <p><input type= "submit" value = "Log in" style = " opacity:0.80; background-color: red;border: none;color: white; font-size: 18px;  border-radius: 15px; height:35px;"></p>
-		  <p><a href = "register" style = "color : white;">I don't have registration! </a></p>
+		  <p><a href = "/MyProject/register" style = "color : white;">I don't have registration! </a></p>
 		</form>
 	</div>
 </body>

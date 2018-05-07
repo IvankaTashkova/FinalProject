@@ -70,15 +70,35 @@ public class ProductController {
 			}
 			if(product != null) {
 				if (session.getAttribute("favorites") == null) {
-					user.addToFavorite(product);;
-					favorites.addAll(user.getFavorites());			
+					try {
+						favorites.addAll(userDao.getFavoriteProducts(user));
+					} catch (SQLException | InvalidArgumentsException e) {
+						model.addAttribute("exception", e);
+						e.printStackTrace();
+						return "error";
+					}
+					user.addToFavorite(product);
+					favorites.add(product);		
+					try {
+						userDao.addFavoriteProduct(user, Long.parseLong(productId));
+					} catch (NumberFormatException | SQLException e) {
+						model.addAttribute("exception", e);
+						e.printStackTrace();
+						return "error";
+					}
 				}
 				else {
 					favorites.addAll((HashSet)session.getAttribute("favorites"));
 					if(!favorites.contains(product)) {
 						user.addToFavorite(product);
 						favorites.add(product);
-						
+						try {
+							userDao.addFavoriteProduct(user, Long.parseLong(productId));
+						} catch (NumberFormatException | SQLException e) {
+							model.addAttribute("exception", e);
+							e.printStackTrace();
+							return "error";
+						}
 						model.addAttribute("info", "Added to favorite products!");
 					}
 					else {
@@ -115,6 +135,13 @@ public class ProductController {
 			if(favorites.contains(product)) {
 				user.removeFromFavorite(product);
 				favorites.remove(product);
+				try {
+					userDao.deleteProductFromFavorites(user, Long.parseLong(productId));
+				} catch (NumberFormatException | SQLException e) {
+					model.addAttribute("exception", e);
+					e.printStackTrace();
+					return "error";
+				}
 				model.addAttribute("info", "Removed from favorite products!");
 			}
 			model.addAttribute("favorites", favorites);

@@ -6,6 +6,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -187,8 +188,7 @@ public class UserDao implements IUserDao{
 
 	@Override
 	public void addFavoriteProduct(User user, long productId) throws SQLException {
-		String sqlInsertFavorite = "INSERT INTO user_has_favorite_products (user_id, product_id) VALUES (?,?)";
-	
+		String sqlInsertFavorite = "INSERT INTO users_has_favorite_products VALUES (?,?)";
 		try(PreparedStatement ps = connection.prepareStatement(sqlInsertFavorite)){
 			ps.setLong(1, user.getId());
 			ps.setLong(2, productId);
@@ -198,7 +198,7 @@ public class UserDao implements IUserDao{
 
 	@Override
 	public void deleteProductFromFavorites(User user, long productId) throws SQLException {
-		String sqlDeleteFavorite = "DELETE FROM user_has_favorite_products WHERE user_id = ? AND product_id = ?;";
+		String sqlDeleteFavorite = "DELETE FROM users_has_favorite_products WHERE user_id = ? AND product_id = ?;";
 		try(PreparedStatement ps = connection.prepareStatement(sqlDeleteFavorite)){
 			ps.setLong(1, user.getId());
 			ps.setLong(2, productId);
@@ -207,40 +207,21 @@ public class UserDao implements IUserDao{
 	}
 
 	@Override
-	public boolean checkIfFavoriteProduct(User user, long productId) throws SQLException {
-		String sqlCheckFavorite = "SELECT * FROM user_has_favorite_products WHERE user_id = ? AND product_id = ?;";
-		try(PreparedStatement ps = connection.prepareStatement(sqlCheckFavorite)){
-			ps.setLong(1, user.getId());
-			ps.setLong(2, productId);
-			ResultSet result = ps.executeQuery();
-			int counter = 0;
-			while(result.next()) {
-				counter++;
-			}
-			if(counter != 0) {
-				return true;
-			}
-		}
-		return false;
-	}
-
-
-	@Override
-	public List<Product> getFavoriteProducts(User user) throws SQLException, InvalidArgumentsException {
-		ArrayList<Product> favProducts = new ArrayList<>();
-		String sqlSelectUser = "SELECT product_id FROM user_has_favorite_products WHERE user_id = ? ;";
-		try(PreparedStatement ps = connection.prepareStatement(sqlSelectUser)){
+	public HashSet<Product> getFavoriteProducts(User user) throws SQLException, InvalidArgumentsException {
+		String sqlSelectFavorite = "SELECT product_id FROM users_has_favorite_products WHERE user_id = ?";
+		HashSet<Product> favorites =  new HashSet<>();
+		try(PreparedStatement ps = connection.prepareStatement(sqlSelectFavorite,Statement.RETURN_GENERATED_KEYS)){
 			ps.setLong(1, user.getId());
 			ResultSet result = ps.executeQuery();
 			while (result.next()) {
-				long id = result.getLong("product_id");
-				Product product = productDao.getProductById(id);
-				favProducts.add(product);
+				long productId = result.getLong("product_id");
+				Product product = productDao.getProductById(productId);
+				favorites.add(product);
+				user.addToFavorite(product);
 			}
 		}
-		return favProducts;
+		return favorites;
 	}
-	
-	
+
 
 }

@@ -1,6 +1,7 @@
 package com.example.model.dao;
 
 import java.sql.SQLException;
+import java.util.HashSet;
 import java.util.List;
 
 import com.example.model.Product;
@@ -29,7 +30,5 @@ public interface IUserDao {
 	
 	public void deleteProductFromFavorites(User user, long productId) throws SQLException;
 	
-	public boolean checkIfFavoriteProduct(User user, long productId) throws SQLException;
-	
-	public List<Product> getFavoriteProducts(User user) throws SQLException, InvalidArgumentsException;
+	public HashSet<Product> getFavoriteProducts(User user) throws SQLException, InvalidArgumentsException;
 }

@@ -134,46 +134,42 @@ hr{border:0;border-top:1px solid #eee;margin:20px 0}
 }
 
 
-.login{
-	background-image: url("login.jpg");
-	background-repeat: no-repeat;
-	background-position:center;
-	margin-top:150px;
-	background-color: white; 
-	opacity:0.8; 
-	color: white;
-	padding: 5px 100px;
-	text-align: center;
-	display: inline-block;
-	height:550px;
-	width:100%;
-}
+
 
 .login{
 	margin-top:70px;
 	background-color: white; 
 	background-image : url("/MyProject/images/login.jpg");
-	opacity:0.8; 
+	background-repeat: no-repeat;
+	background-position:center;
+	opacity:0.80; 
 	color: white;
-	padding: 5px 100px;
+	padding: 5px 150px;
 	text-align: center;
 	display: inline-block;
 	font-size: 18px;
-	border-radius: 15px;
-	height:400px;
 	position:relative;
+	background-color: white; 
+	margin:auto;
+	height:400px;
+	width:100%;
 }
 .signin-container{
 	background-image : url("/MyProject/images/login.jpg");
-	margin:auto;
-	width:400px;
-	height:550px;
-	border-radius:10px;
+	background-repeat: no-repeat;
+	background-position:center;
+	margin-top:100px;
 	background-color: white;
+	padding: 5px 200px;
 	text-align:center;
-	opacity : 0.85;
+	opacity : 0.80;
+	font-size: 18px;
 	display: inline-block;
 	position:relative;
+	background-color: white; 
+	margin:auto;
+	height:400px;
+	width:100%;
 }
 .pizza{
 	margin:auto;

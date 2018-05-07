@@ -1,6 +1,8 @@
 package com.example.controller;
 
 import java.sql.SQLException;
+import java.util.HashSet;
+
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import com.example.controller.manager.UserManager;
+import com.example.model.Product;
 import com.example.model.User;
 import com.example.model.dao.UserDao;
 import com.example.util.BCrypt;
@@ -68,12 +71,25 @@ public class UserController {
 	@RequestMapping(value = "/profile",method = RequestMethod.GET)
 	public String getProfileInfo(HttpSession session,Model model) {
 		User user = (User) session.getAttribute("user");
+		HashSet<Product> favorites =  new HashSet<>();
 		if (user == null) {
 			return "login";
 		}
-		model.addAttribute("favorites", session.getAttribute("favorites"));
+		if(session.getAttribute("favorites") == null) {
+			try {
+				favorites.addAll(userDao.getFavoriteProducts(user));	
+			} catch (SQLException | InvalidArgumentsException e) {
+				e.printStackTrace();
+				model.addAttribute("exception", e);
+			}
+		}
+		else {
+			favorites.addAll((HashSet<Product>)session.getAttribute("favorites"));
+		}
 		model.addAttribute("user", user);
 		model.addAttribute("cart", session.getAttribute("cart"));
+		model.addAttribute("favorites", favorites);
+		session.setAttribute("favorites", favorites);
 		return "profile";
 	}
 	/*
