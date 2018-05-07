@@ -11,7 +11,7 @@
 <body>
 <div class="w3-top" style = "font-family:Arial">
   <div class="w3-bar w3-white w3-padding w3-card">
-    <a href="/MyProject/" ><img border="0"src="images/home-icon.png" width="40" height="40"></a>
+    <a href="/MyProject/" ><img border="0"src="/MyProject/images/home-icon.png" width="40" height="40"></a>
   </div> 
 </div>
 	<div class = "signin-container" style= "text-align:center">
@@ -43,7 +43,7 @@
 		</tr>
 		</table>
 		</form>
-		<a href="login" style = "color : white;">I already have registration!</a>
+		<a href="/MyProject/login" style = "color : white;">I already have registration!</a>
 
   </div>
 </body>

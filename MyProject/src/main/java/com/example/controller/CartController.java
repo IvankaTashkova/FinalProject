@@ -73,9 +73,7 @@ public class CartController {
 				}
 			}	
 			session.setAttribute("user", user);
-			Order order = new Order(calculatePrice(cart), LocalDateTime.now(), cart);
 			session.setAttribute("cart", cart);
-			session.setAttribute("order", order);
 			model.addAttribute("cart", cart);
 			return "profile";
 		}
@@ -135,19 +133,30 @@ public class CartController {
 	}
 	
 	@RequestMapping(value="/order",method = RequestMethod.GET)
-	public String getOrder(HttpSession session) {
+	public String getOrder(HttpSession session,Model model) {
 		User user = (User) session.getAttribute("user");
-		Map<Product,Integer> productsInOrder = new HashMap<>();
-		productsInOrder.putAll((Map<Product, Integer>) ((Order)session.getAttribute("order")).getProducts());
-		session.setAttribute("productsInOrder", productsInOrder);
-		session.setAttribute("totalPrice", calculatePrice(productsInOrder));
+		ConcurrentHashMap<Product, Integer> productsInCart = new ConcurrentHashMap();
 		List<Address>addresses = new ArrayList<>();
-		try {
-			addresses.addAll(addressDao.getAllUserAddresses(user));
-		} catch (SQLException | InvalidArgumentsException e) {
-			System.out.println(e.getMessage());
+		if (session.getAttribute("cart") == null) {
+			return "login";	
 		}
-		session.setAttribute("userAddresses", addresses);
+		else {
+			productsInCart.putAll((Map<Product, Integer>)session.getAttribute("cart"));
+			try {
+				addresses.addAll(addressDao.getAllUserAddresses(user));
+			} catch (SQLException | InvalidArgumentsException e) {
+				e.printStackTrace();
+				model.addAttribute("exception", e);
+				return "error";
+			}
+		}	
+		model.addAttribute("userAddresses", addresses);
+		session.setAttribute("user", user);
+		session.setAttribute("productsInCart", productsInCart);
+		model.addAttribute("productsInCart", productsInCart);
+		model.addAttribute("totalPrice", calculatePrice(productsInCart));
+		return "order";
+		/*
 		List<Restaurant>restaurants = new ArrayList<>();
 		try {
 			restaurants.addAll(restaurantDao.getAllRestaurants());
@@ -155,12 +164,12 @@ public class CartController {
 			System.out.println(e.getMessage());
 		}
 		session.setAttribute("restaurants", restaurants);
-		return "order";
+		return "order";*/
 	}
 	
 	@RequestMapping(value="/order",method = RequestMethod.POST)
 	public String makeOrder(HttpSession session) {
-		Order order = (Order) session.getAttribute("order");
+		/*Order order = (Order) session.getAttribute("order");
 		User user = (User) session.getAttribute("user");
 	//	order.setAddress(address); get address from form in order.jsp
 		order.setUserId(user.getId());
@@ -170,7 +179,8 @@ public class CartController {
 		} catch (SQLException e) {
 			System.out.println(e.getMessage());
 		}
-		
-		return "logged";
+		return "logged";*/
+		return "profile";
 	}
+		
 }

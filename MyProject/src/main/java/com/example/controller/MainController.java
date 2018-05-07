@@ -42,5 +42,9 @@ public class MainController {
 			}
 		return "menu";
 	}
+	@RequestMapping(value = "/map",method = RequestMethod.GET)
+	public String map(Model m) {
+		return "map";
+	}
 	
 }

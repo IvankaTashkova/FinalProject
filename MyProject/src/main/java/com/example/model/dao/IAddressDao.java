@@ -17,5 +17,7 @@ public interface IAddressDao {
 	public void updateAddress(Address address) throws SQLException;
 	
 	public void addNewAddress(Address address) throws SQLException;
+	
+	public Address getAddressById(long id) throws SQLException;
 
 }

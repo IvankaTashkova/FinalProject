@@ -25,7 +25,7 @@ h1,h2,h3,h4,h5,h6 {
     <div class="w3-right w3-hide-small" style = "font-family:Arial">
       <a href="profile"><img src = "images/user-icon.png" width = "25" height = "25" style = "margin-top:0px; margin-bottom:0;"></a>
       <a href="#menu" class="w3-bar-item w3-button">Menu</a>
-      <form action = "logout" method = "post"><input type= "submit" class="w3-bar-item w3-button" value = "Logout"></form>
+      <form action = "/MyProject/logout" method = "post"><input type= "submit" class="w3-bar-item w3-button" value = "Logout"></form>
     </div>
   </div> 
 </div>
@@ -41,7 +41,7 @@ h1,h2,h3,h4,h5,h6 {
 
 <div class="w3-content" style="max-width:1100px">
 
-  <div class="w3-row w3-padding-64" id="menu">
+  <div class="w3-row w3-padding-64" id="menu" >
     <div class="w3-col l6 w3-padding-large">
     <c:import url="menu.jsp"></c:import>
     </div>

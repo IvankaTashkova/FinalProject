@@ -1,6 +1,8 @@
 package com.example.model;
 
+import java.sql.Timestamp;
 import java.time.LocalDateTime;
+import java.time.ZoneOffset;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
@@ -11,7 +13,7 @@ public class Order {
 	private long userId;
 	private LocalDateTime date;
 	private double price;
-	private int status;
+	private long status;
 	private String address;
 	private Restaurant restaurant;
 	private Map<Product, Integer> products = new HashMap<>();
@@ -37,19 +39,21 @@ public class Order {
 		this.products = products;
 	}
 	
-	public Order(long id,double price,LocalDateTime date, Status status,long userId) {
-		this(price,date,status,userId);
-		setId(id);
-	}
-	
-	public Order(long id,double price,LocalDateTime date, int status) {
+	public Order(long id,double price,LocalDateTime date, long status) {
 		this.id = id;
 		this.date = date;
 		this.status = status;
 		setId(id);
 	}
 	
-	public Order(int id,double price,LocalDateTime date, int status, Map<Product, Integer> products) {
+	public Order(long id,double price,LocalDateTime date, long status,long userId) {
+		this(id,price, date, status);
+		setId(id);
+	}
+	
+	
+	
+	public Order(int id,double price,LocalDateTime date, long status, Map<Product, Integer> products) {
 		this.id = id;
 		this.date = date;
 		this.status = status;
@@ -66,7 +70,7 @@ public class Order {
 		this.id = id;
 	}
 	
-	public int getStatus() {
+	public long getStatus() {
 		return status;
 	}
 	
@@ -124,4 +128,9 @@ public class Order {
 	public Restaurant getRestaurant() {
 		return restaurant;
 	}
+	
+	public static LocalDateTime localDateFromTimestamp(Timestamp timestamp) {
+	    return LocalDateTime
+	        .ofInstant(timestamp.toInstant(), ZoneOffset.ofHours(0));
+	  }
 }

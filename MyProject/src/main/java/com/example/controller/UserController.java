@@ -1,7 +1,10 @@
 package com.example.controller;
 
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashSet;
+import java.util.List;
 
 import javax.servlet.http.HttpSession;
 
@@ -12,9 +15,11 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
-import com.example.controller.manager.UserManager;
+
+import com.example.model.Address;
 import com.example.model.Product;
 import com.example.model.User;
+import com.example.model.dao.AddressDao;
 import com.example.model.dao.UserDao;
 import com.example.util.BCrypt;
 import com.example.util.InvalidArgumentsException;
@@ -24,6 +29,8 @@ public class UserController {
 	
 	@Autowired
 	private UserDao userDao;
+	@Autowired
+	private AddressDao addressDao;
 
 	@RequestMapping(value = "/login",method = RequestMethod.GET)
 	public String showLogIn() {
@@ -67,11 +74,11 @@ public class UserController {
 		return "login";
 	}
 	
-	
 	@RequestMapping(value = "/profile",method = RequestMethod.GET)
 	public String getProfileInfo(HttpSession session,Model model) {
 		User user = (User) session.getAttribute("user");
 		HashSet<Product> favorites =  new HashSet<>();
+		List<Address>addresses = new ArrayList<>();
 		if (user == null) {
 			return "login";
 		}
@@ -85,6 +92,17 @@ public class UserController {
 		}
 		else {
 			favorites.addAll((HashSet<Product>)session.getAttribute("favorites"));
+		}
+		try {
+			addresses.addAll(addressDao.getAllUserAddresses(user));
+			model.addAttribute("addresses", addresses);
+			session.setAttribute("addresses", addresses);
+		} catch (SQLException | InvalidArgumentsException e) {
+			e.printStackTrace();
+			model.addAttribute("exception", e);
+		}
+		if(addresses.isEmpty()) {
+			model.addAttribute("addressMessage", "You don't have added addresses!");
 		}
 		model.addAttribute("user", user);
 		model.addAttribute("cart", session.getAttribute("cart"));
@@ -226,5 +244,48 @@ public class UserController {
 	@RequestMapping(value = "/register",method = RequestMethod.GET)
 	public String getRegister() {
 		return "register";
+	}
+	
+	@RequestMapping(value = "/profile/address/delete/{id}",method = RequestMethod.GET)
+	public String deleteAddress(Model model,HttpSession session,@PathVariable("id") String id) {
+		User user = (User) session.getAttribute("user");
+		Address address = null;
+		ArrayList<Address> addresses = new ArrayList<>();
+		try {
+			address = addressDao.getAddressById(Long.parseLong(id));;
+		} catch (SQLException e) {
+			e.printStackTrace();
+			model.addAttribute("exception", e);
+			return "error";
+		}
+		addresses.addAll((ArrayList<Address>) session.getAttribute("addresses"));
+		addresses.remove(address);
+		try {
+			addressDao.deleteAddress(address);
+		} catch (SQLException e) {
+				e.printStackTrace();
+				model.addAttribute("exception", e);
+				return "error";
+		}
+		model.addAttribute("addresses", addresses);
+		session.setAttribute("addresses", addresses);
+		return "profile";
+	}
+	@RequestMapping(value = "/profile/address",method = RequestMethod.GET)
+	public String addAddress(Model model,HttpSession session,@RequestParam String address) {
+		User user = (User) session.getAttribute("user");
+		Address newAddress = null;
+		if(!address.isEmpty()) {
+			newAddress = new Address(address, user.getId());
+			try {
+				addressDao.addNewAddress(newAddress);
+			} catch (SQLException e) {
+				e.printStackTrace();
+				model.addAttribute("exception", e);
+				return "error";
+			}
+		}
+		
+		return "profile";
 	}
 }

@@ -60,7 +60,7 @@
 }
 </style>
 </head>
-<body>
+<body  style = "background-image: linear-gradient(white 15%, #ff4040 100%);">
 
 <div class="sidenav">
 	<img src="/MyProject/images/user-icon.png" width = "80" style = "margin-top:5px;opacity:1;possition:center;display: block;margin-top:50px;margin-left: auto; margin-right: auto;">
@@ -116,7 +116,8 @@
 	</form>
 	</div>
 </div>
-<hr>
+<br>
+<br>
 <div id="favorite" style = " margin: auto; text-align:center;">
 <h3 style= "border: none;color: black;padding: 10px 150px;display: inline-block;font-size: 18px;  border-radius: 10px;">Favorite products</h3>
 <div style= "margin:auto;border:1px solid red;padding:10px;text-align:center;width:50%">
@@ -136,7 +137,8 @@
 	</table>
 </div>
 </div>
-<hr>
+<br>
+<br>
 <div id="cart" style = " margin: auto; text-align:center;">
 <h3 style= "border: none;color: black;padding: 10px 150px;display: inline-block;font-size: 18px;  border-radius: 10px;">Shopping cart</h3>
 	<div style= "margin:auto;border:1px solid red;padding:10px;text-align:center;width:50%">
@@ -172,23 +174,35 @@
 			
 </table>
 <a href = "/MyProject/home">Continue shopping</a> 
-<p style = "padding-left:350px;"><button href="makeorder" align = "right">Order now</button></p>
+<p style = "padding-left:350px;"><a href="/MyProject/order" align = "right">Order now</a></p>
 </div>
 </div>
-<hr>
+<br>
+<br>
 <div id="orders" style = " margin: auto; text-align:center;">
 <h3 style= "border: none;color: black;padding: 10px 150px;display: inline-block;font-size: 18px;  border-radius: 10px;">Orders</h3>
 <div style= "margin:auto;border:1px solid red;padding:10px;text-align:center;width:50%">
 
 </div>
 </div>
-<hr>
+<br>
+<br>
 <div id="addresses" style = " margin: auto; text-align:center;">
 <h3 style= "border: none;color: black;padding: 10px 150px;display: inline-block;font-size: 18px;  border-radius: 10px;">My addresses</h3>
 <div style= "margin:auto;border:1px solid red;padding:10px;text-align:center;width:50%">
-
+<h4 style = "color:white;"><c:out value="${addressMessage}"></c:out></h4>
+<form action="/MyProject/profile/address" method = "get">
+	<input type="text" maxlength="55" placeholder="Add address..." name="address">
+	<input type="submit" value="Add" style = "color:white;background-color:red;border:0;height:25px;">
+</form>
+<c:if test="${not empty addresses}">
+<c:forEach var="address" items="${addresses}">
+<h5 style="color:white;"><c:out value="${address.location}"></c:out> <a href="/MyProject/profile/address/delete/${address.id}">Remove</a></h5>
+</c:forEach>
+</c:if>
 </div>
 </div>
-<hr>
+<br>
+<br>
 </body>
 </html>

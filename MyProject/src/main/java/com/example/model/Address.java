@@ -13,7 +13,7 @@ public class Address {
 	
 	public Address(long id, String location, long userId){
 		this(location,userId);
-		setId(userId);
+		setId(id);
 	}
 
 	public long getId() {

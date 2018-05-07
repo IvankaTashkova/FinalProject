@@ -4,6 +4,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 import org.springframework.stereotype.Component;
@@ -24,7 +25,7 @@ public class AddressDao implements IAddressDao{
 	
 	@Override
 	public List<Address> getAllUserAddresses(User user) throws SQLException, InvalidArgumentsException {
-		String sqlSelectAllAddresses = "SELECT * FROM addresses  WHERE user_id = ?;";
+		String sqlSelectAllAddresses = "SELECT address_id,location,user_id FROM addresses WHERE user_id = ?;";
 		List<Address> addresses = new ArrayList<>();
 		
 		try(PreparedStatement ps = connection.prepareStatement(sqlSelectAllAddresses)){
@@ -33,7 +34,8 @@ public class AddressDao implements IAddressDao{
 			while (set.next()) {
 				long id = set.getLong("address_id");
 				String location = set.getString("location");
-				addresses.add(new Address(id, location, user.getId()));
+				Address address =  new Address(id, location, user.getId());
+				addresses.add(address);
 			}
 		}
 		return addresses;
@@ -63,14 +65,35 @@ public class AddressDao implements IAddressDao{
 	public void addNewAddress(Address address) throws SQLException {
 		String sqlInsertAddress = "INSERT INTO addresses (location, user_id) VALUES(?,?)";
 		
-		try(PreparedStatement ps = connection.prepareStatement(sqlInsertAddress)){
+		try(PreparedStatement ps = connection.prepareStatement(sqlInsertAddress,Statement.RETURN_GENERATED_KEYS)){
 			ps.setString(1, address.getLocation());
 			ps.setLong(2, address.getUserId());
 			ps.executeUpdate();
-			ResultSet rs = ps.getGeneratedKeys();
-			rs.next();
-			address.setId(rs.getLong("address_id"));
+			try(ResultSet result = ps.getGeneratedKeys()){
+				if(result.next()) {
+					address.setId(result.getLong(1));
+				}
+			}
+			
 		}
 	}
+
+	@Override
+	public Address getAddressById(long id) throws SQLException {
+		Address address = null;
+		String sqlGetById  = "SELECT address_id,location,user_id FROM addresses WHERE address_id = ?;";
+		try(PreparedStatement ps = connection.prepareStatement(sqlGetById)){
+			ps.setLong(1, id);
+			ResultSet result = ps.executeQuery();
+			if (result.next()) {
+				long address_id = result.getLong("address_id");
+				String location = result.getString("location");
+				long user_id = result.getLong("user_id");
+				address =  new Address(address_id, location, user_id);
+			}
+		}
+		return address;
+	}
+	
 
 }

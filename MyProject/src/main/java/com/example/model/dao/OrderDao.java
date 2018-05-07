@@ -5,6 +5,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.sql.Timestamp;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -27,19 +28,22 @@ public class OrderDao implements IOrderDao{
 	
 	@Override
 	public List<Order> getAllOrderByUser(User user){
-		String sqlSelectAllOrders = "SELECT * FROM orders \n WHERE user_id = ?;";
+		String sqlSelectAllOrders = "SELECT order_id,price,date,user_id,status_id,address_id,restaurant_id FROM orders"
+				+ " WHERE user_id = ?;";
 		List<Order> orders = new ArrayList<>();
 		PreparedStatement ps;
 		try {
 			ps = connection.prepareStatement(sqlSelectAllOrders);
 			ps.setLong(1, user.getId());
-			ResultSet set = ps.executeQuery();
-			while (set.next()) {
-				int id = set.getInt("order_id");
-				Double price = set.getDouble("price");
-				LocalDateTime date = LocalDateTime.now();
-				int status = set.getInt("status_id");
-				orders.add(new Order(id, price, date,status));
+			ResultSet result = ps.executeQuery();
+			while (result.next()) {
+				long id = result.getLong("order_id");
+				Double price = result.getDouble("price");
+				Timestamp date = result.getTimestamp("date");
+				long userId = result.getLong("user_id");
+				long status = result.getLong("status_id");
+				Order order = new Order(id, price, Order.localDateFromTimestamp(date), status, userId);
+				orders.add(order);
 			}
 		} catch (SQLException e) {
 			System.out.println(e.getMessage());
