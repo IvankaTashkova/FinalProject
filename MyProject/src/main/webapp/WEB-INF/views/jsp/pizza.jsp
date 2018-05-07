@@ -20,7 +20,7 @@
   </div> 
 </div>
 <div style= "margin:auto;border:1px solid red;padding:10px;text-align:center;width:50%; margin-top:150px;">
-<p style= "color:red"><c:out value="${info}"></c:out></p>
+<h6 style= "color:red"><c:out value="${info}"></c:out></h6>
 <h4><c:out value="${sessionScope.pizza.name}"></c:out> </h4>
 <img  src="/MyProject/images/<c:out value ="${sessionScope.pizza.imgUrl}"></c:out>">
 <br>

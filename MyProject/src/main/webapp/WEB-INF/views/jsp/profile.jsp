@@ -182,7 +182,18 @@
 <div id="orders" style = " margin: auto; text-align:center;">
 <h3 style= "border: none;color: black;padding: 10px 150px;display: inline-block;font-size: 18px;  border-radius: 10px;">Orders</h3>
 <div style= "margin:auto;border:1px solid red;padding:10px;text-align:center;width:50%">
+<h4 style = "color:white;"><c:out value="${addressMessage}"></c:out></h4>
+<c:if test="${not empty orders}">
+<c:forEach var="order" items="${orders}">
+	<table style="margin:auto">
+		<tr>
+			<td><c:out value="${order.date}"></c:out></td>
+			<td><c:out value="${order.status}"></c:out></td>
+		</tr>
 
+	</table>
+</c:forEach>
+</c:if>
 </div>
 </div>
 <br>
@@ -191,15 +202,15 @@
 <h3 style= "border: none;color: black;padding: 10px 150px;display: inline-block;font-size: 18px;  border-radius: 10px;">My addresses</h3>
 <div style= "margin:auto;border:1px solid red;padding:10px;text-align:center;width:50%">
 <h4 style = "color:white;"><c:out value="${addressMessage}"></c:out></h4>
-<form action="/MyProject/profile/address" method = "get">
-	<input type="text" maxlength="55" placeholder="Add address..." name="address">
-	<input type="submit" value="Add" style = "color:white;background-color:red;border:0;height:25px;">
-</form>
 <c:if test="${not empty addresses}">
 <c:forEach var="address" items="${addresses}">
 <h5 style="color:white;"><c:out value="${address.location}"></c:out> <a href="/MyProject/profile/address/delete/${address.id}">Remove</a></h5>
 </c:forEach>
 </c:if>
+<form action="/MyProject/profile/address" method = "get">
+	<input type="text" maxlength="55" placeholder="Add address..." name="address">
+	<input type="submit" value="Add" style = "color:white;background-color:red;border:0;height:25px;">
+</form>
 </div>
 </div>
 <br>

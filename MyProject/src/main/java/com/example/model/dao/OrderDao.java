@@ -27,13 +27,11 @@ public class OrderDao implements IOrderDao{
 	}
 	
 	@Override
-	public List<Order> getAllOrderByUser(User user){
+	public List<Order> getAllOrderByUser(User user) throws SQLException{
 		String sqlSelectAllOrders = "SELECT order_id,price,date,user_id,status_id,address_id,restaurant_id FROM orders"
 				+ " WHERE user_id = ?;";
 		List<Order> orders = new ArrayList<>();
-		PreparedStatement ps;
-		try {
-			ps = connection.prepareStatement(sqlSelectAllOrders);
+		try (PreparedStatement ps = connection.prepareStatement(sqlSelectAllOrders)){
 			ps.setLong(1, user.getId());
 			ResultSet result = ps.executeQuery();
 			while (result.next()) {
@@ -45,8 +43,6 @@ public class OrderDao implements IOrderDao{
 				Order order = new Order(id, price, Order.localDateFromTimestamp(date), status, userId);
 				orders.add(order);
 			}
-		} catch (SQLException e) {
-			System.out.println(e.getMessage());
 		}
 		return orders;
 	}

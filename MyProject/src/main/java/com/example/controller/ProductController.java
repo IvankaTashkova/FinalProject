@@ -103,7 +103,7 @@ public class ProductController {
 					}
 					else {
 						model.addAttribute("info", "Already added to favorite products!");
-						return "/pizza/"+productId;
+						return "pizza";
 					}
 				}
 			}

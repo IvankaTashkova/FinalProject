@@ -17,9 +17,11 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import com.example.model.Address;
+import com.example.model.Order;
 import com.example.model.Product;
 import com.example.model.User;
 import com.example.model.dao.AddressDao;
+import com.example.model.dao.OrderDao;
 import com.example.model.dao.UserDao;
 import com.example.util.BCrypt;
 import com.example.util.InvalidArgumentsException;
@@ -31,6 +33,8 @@ public class UserController {
 	private UserDao userDao;
 	@Autowired
 	private AddressDao addressDao;
+	@Autowired
+	private OrderDao orderDao;
 
 	@RequestMapping(value = "/login",method = RequestMethod.GET)
 	public String showLogIn() {
@@ -78,7 +82,8 @@ public class UserController {
 	public String getProfileInfo(HttpSession session,Model model) {
 		User user = (User) session.getAttribute("user");
 		HashSet<Product> favorites =  new HashSet<>();
-		List<Address>addresses = new ArrayList<>();
+		List<Address> addresses = new ArrayList<>();
+		List<Order> orders = new ArrayList<>();
 		if (user == null) {
 			return "login";
 		}
@@ -92,6 +97,15 @@ public class UserController {
 		}
 		else {
 			favorites.addAll((HashSet<Product>)session.getAttribute("favorites"));
+		}
+		try {
+			orders.addAll(orderDao.getAllOrderByUser(user));
+			model.addAttribute("orders", orders);
+			session.setAttribute("orders", orders);
+		} catch (SQLException e) {
+			e.printStackTrace();
+			model.addAttribute("exception", e);
+			return "error";
 		}
 		try {
 			addresses.addAll(addressDao.getAllUserAddresses(user));
