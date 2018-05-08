@@ -91,11 +91,13 @@ public class CartController {
 		}
 		cart.putAll((Map<Product, Integer>)session.getAttribute("cart"));
 		if(isExist(Long.parseLong(productId), cart)) {
-			cart.remove(product);
+			for (Entry<Product,Integer> entry : cart.entrySet()) {
+				if(entry.getKey().equals(product)) {
+					cart.remove(entry.getKey(), entry.getValue());
+				}
+			}
 			user.removeProductFromShoppingCart(product);
-			System.out.println("================exists=================");
-		}else {
-			System.out.println("--------------------------------------");
+			
 		}
 		model.addAttribute("cart", cart);
 		session.setAttribute("cart", cart);
