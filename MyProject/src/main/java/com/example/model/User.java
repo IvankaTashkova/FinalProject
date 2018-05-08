@@ -169,4 +169,8 @@ public class User {
 			this.favorites.remove(product);
 		}
 	}
+	
+	public void clearCart() {
+		this.cart.clear();
+	}
 }

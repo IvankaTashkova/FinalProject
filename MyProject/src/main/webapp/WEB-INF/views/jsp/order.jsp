@@ -23,15 +23,20 @@
   </div> 
 </div>
 <div style= "margin:auto;border:1px solid red;padding:10px;text-align:center;width:50%;margin-top:150px;">
+<h5><c:out value="${info}"></c:out></h5>
 <table style="margin:auto;">
 	<tr>
 		<th>Product</th>
+		<th>Size</th>
+		<th>Dough</th>
 		<th>Quantity</th>
 		<th>Price</th>
 	</tr>
 	<c:forEach var = "product" items = "${sessionScope.productsInCart}">
 		<tr>
 			<td><c:out value="${product.key.name}"></c:out> </td>
+			<td><c:out value="${product.key.size.name}"></c:out></td>
+			<td><c:out value="${product.key.dough.name}"></c:out></td>
 			<td><c:out value="${product.value}"></c:out></td>
 			<td><c:out value="${product.key.price*product.value}"></c:out></td>
 		</tr>
@@ -41,15 +46,16 @@
 	</tr>
 </table>
 </div>
-<form>
+<form action="/MyProject/order" method="post">
 <br>
 <br>
 <div style= "margin:auto;border:1px solid red;padding:10px;text-align:center;width:50%">
 <p>Choose address:</p>
 	<p>Select from you addresses:</p>
-	<select>
+	<select name="useraddress">
+	<option value = "default">--Your addresses--</option>
 		<c:forEach var="address" items="${userAddresses}">
-		<option><c:out value="${address.location}"></c:out></option>
+		<option value = "${address.location}"><c:out value="${address.location}"></c:out></option>
 		</c:forEach>
 	</select>
 	<p>or</p>
@@ -60,9 +66,10 @@
 <div style= "margin:auto;border:1px solid red;padding:10px;text-align:center;width:50%">
 	<p>You can take you order from one of our restaurants!</p>
  	<p>Choose one:</p>
- 	<select>
+ 	<select name = "restaurant">
+ 		<option value = "default">--Restaurants--</option>
 		<c:forEach var="restaurant" items="${restaurants}">
-			<option><c:out value="${restaurant.address}"></c:out></option>
+			<option value="${restaurant.address}"><c:out value="${restaurant.address}"></c:out></option>
 		</c:forEach>
 	</select> 
 	<br>
@@ -164,7 +171,7 @@
     <script src="https://maps.googleapis.com/maps/api/js?key= AIzaSyB9OVx6nYiXHnqLDdCxPqx0TYenbqCGv2o&callback=initMap"
     async defer></script>
     </div>
-	<a href="" style = "color :white;">Make Order</a>
+	<input type = "submit" value="Make order">
 </div>
 <br>
 <br>

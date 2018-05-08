@@ -14,7 +14,7 @@ public class Order {
 	private LocalDateTime date;
 	private double price;
 	private Status status;
-	private String address;
+	private Address address;
 	private Restaurant restaurant;
 	private Map<Product, Integer> products = new HashMap<>();
 	
@@ -92,11 +92,11 @@ public class Order {
 		this.date = date;
 	}
 	
-	public String getAddress() {
+	public Address getAddress() {
 		return address;
 	}
 	
-	public void setAddress(String address) {
+	public void setAddress(Address address) {
 		this.address = address;
 	}
 	

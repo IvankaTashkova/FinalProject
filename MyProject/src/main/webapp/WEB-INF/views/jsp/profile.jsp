@@ -200,9 +200,13 @@
 				<td>
 					<c:out value="${product.value}"></c:out>
 				</td>
-			</tr>
+			</tr>			
 		</c:forEach>
+		<tr>
+			<td>Price: <c:out value="${order.price}"></c:out></td>
+		</tr>
 	</table>
+	<br>
 </c:forEach>
 </c:if>
 </div>

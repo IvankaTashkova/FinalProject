@@ -1,7 +1,9 @@
 package com.example.controller;
 
 import java.sql.SQLException;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
@@ -17,6 +19,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import com.example.model.Address;
 import com.example.model.Dough;
+import com.example.model.Order;
 import com.example.model.Product;
 import com.example.model.Restaurant;
 import com.example.model.Size;
@@ -97,7 +100,6 @@ public class CartController {
 				}
 			}
 			user.removeProductFromShoppingCart(product);
-			
 		}
 		model.addAttribute("cart", cart);
 		session.setAttribute("cart", cart);
@@ -145,6 +147,7 @@ public class CartController {
 		session.setAttribute("productsInCart", productsInCart);
 		model.addAttribute("productsInCart", productsInCart);
 		model.addAttribute("totalPrice", calculatePrice(productsInCart));
+		session.setAttribute("totalPrice", calculatePrice(productsInCart));
 		List<Restaurant>restaurants = new ArrayList<>();
 		try {
 			restaurants.addAll(restaurantDao.getAllRestaurants());
@@ -160,18 +163,44 @@ public class CartController {
 	}
 	
 	@RequestMapping(value="/order",method = RequestMethod.POST)
-	public String makeOrder(HttpSession session) {
-		/*Order order = (Order) session.getAttribute("order");
+	public String makeOrder(HttpSession session,Model model,@RequestParam String useraddress,@RequestParam String restaurant){
+		String address;
+		if(useraddress.equals("default") && restaurant.equals("default")) {
+			model.addAttribute("info", "You did not select address or restaurant!");
+			return "order";
+		}
+		else {
+			if(!useraddress.equals("default")) {
+				address =  useraddress;
+			}else {
+				address = restaurant;
+			}
+		}
+		Address orderAddress;
+		try {
+			orderAddress = addressDao.getAddressByLocation(address);
+		} catch (SQLException e) {
+			e.printStackTrace();
+			model.addAttribute("exception", e);
+			return "error";
+		}
+		double price = (double) session.getAttribute("totalPrice");
+		HashMap<Product, Integer> products = new HashMap<>();
+		products.putAll((ConcurrentHashMap<Product, Integer>) session.getAttribute("productsInCart"));
+		Order order = new Order(price, LocalDateTime.now(),products);
 		User user = (User) session.getAttribute("user");
-	//	order.setAddress(address); get address from form in order.jsp
+		order.setAddress(orderAddress);
 		order.setUserId(user.getId());
 		try {
 			orderDao.addNewOrder(order);
-			
+			orderDao.addOrderProducts(order);
+			session.setAttribute("cart", null);
+			user.clearCart();
 		} catch (SQLException e) {
-			System.out.println(e.getMessage());
+			e.printStackTrace();
+			model.addAttribute("exception", e);
+			return "error";
 		}
-		return "logged";*/
 		return "profile";
 	}
 		

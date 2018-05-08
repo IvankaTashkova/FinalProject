@@ -86,10 +86,27 @@ public class AddressDao implements IAddressDao{
 			ps.setLong(1, id);
 			ResultSet result = ps.executeQuery();
 			if (result.next()) {
-				long address_id = result.getLong("address_id");
+				long addressId = result.getLong("address_id");
 				String location = result.getString("location");
-				long user_id = result.getLong("user_id");
-				address =  new Address(address_id, location, user_id);
+				long userId = result.getLong("user_id");
+				address =  new Address(addressId, location, userId);
+			}
+		}
+		return address;
+	}
+	
+	public Address getAddressByLocation(String location) throws SQLException {
+		Address address = null;
+		String sqlGetByLocation  = "SELECT address_id,location,user_id FROM addresses WHERE location = ?;";
+		try(PreparedStatement ps = connection.prepareStatement(sqlGetByLocation)){
+			ps.setString(1,location);
+			try(ResultSet result = ps.executeQuery()){
+				if (result.next()) {
+					long addressId = result.getLong("address_id");
+					String getLocation = result.getString("location");
+					long userId = result.getLong("user_id");
+					address =  new Address(addressId, location, userId);
+				}
 			}
 		}
 		return address;
