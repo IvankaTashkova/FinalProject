@@ -1,13 +1,7 @@
 package com.example.controller;
 
 import java.sql.SQLException;
-import java.time.LocalDateTime;
 import java.util.HashSet;
-import java.util.Map;
-import java.util.Map.Entry;
-import java.util.concurrent.ConcurrentHashMap;
-
-import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -16,9 +10,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import com.example.model.Ingredient;
-import com.example.model.Order;
 import com.example.model.Product;
-import com.example.model.Size;
 import com.example.model.User;
 import com.example.model.dao.ProductDao;
 import com.example.model.dao.UserDao;

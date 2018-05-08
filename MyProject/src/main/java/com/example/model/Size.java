@@ -1,25 +1,30 @@
 package com.example.model;
 
-public enum Size {
+public class Size {
 	
-	AVERAGE("Average",1), 
-	BIG("Big",2), 
-	JUMBO("Jumbo",3),
-	ONE("One",4);
 	
 	private String name;
-	private int id;
+	private long id;
 	
-	private Size(String name, int id) {
-		this.name = name;
+	public Size( long id,String name) {
+		setId(id);
+		setName(name);
 	}
 	
 	public String getName() {
 		return name;
 	}
 	
-	public int getId() {
+	public long getId() {
 		return id;
+	}
+	
+	public void setName(String name) {
+		this.name = name;
+	}
+	
+	public void setId(long id) {
+		this.id = id;
 	}
 
 }

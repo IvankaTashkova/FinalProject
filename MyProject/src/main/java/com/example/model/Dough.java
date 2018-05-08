@@ -4,11 +4,7 @@ public class Dough {
 
 	private long id;
 	private String name;
-	
-	public Dough() {
 		
-	}
-	
 	public Dough(long id,String name) {
 		setId(id);
 		setName(name);

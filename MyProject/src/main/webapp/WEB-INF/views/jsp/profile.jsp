@@ -158,8 +158,9 @@
 		<c:set var = "sum" value="${sum + item.key.price*item.value}"></c:set>
 			<tr>
 				<td><c:out value="${item.key.name}"></c:out></td>
-				<td><c:out value="${item.key.size}"></c:out> </td>
+				<td><c:out value="${item.key.size.name}"></c:out> </td>
 				<td>
+				<c:out value="${item.key.dough.name}"></c:out> 
 				</td>
 				<td><c:out value="${ item.key.price }"></c:out></td>
 				<td align="center"><c:out value="${ item.value }"></c:out></td>

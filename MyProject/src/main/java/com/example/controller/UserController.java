@@ -123,23 +123,6 @@ public class UserController {
 		session.setAttribute("favorites", favorites);
 		return "profile";
 	}
-	/*
-	@RequestMapping(value = "/profile",method = RequestMethod.GET)
-	public String editProfile(Model model,
-			@RequestParam String id,
-			@RequestParam String firstname, 
-			@RequestParam String lastname,
-			@RequestParam String username,
-			@RequestParam String email,
-			@RequestParam String password,
-			@RequestParam String confirmpassword,
-			@RequestParam String phoneNumber, 
-			HttpSession session) {
-		User user = (User) session.getAttribute("user");
-		//password = BCrypt.hashpw(password, BCrypt.gensalt());
-		//confirmpassword = BCrypt.hashpw(confirmpassword, BCrypt.gensalt());
-		return "profile";
-	}*/
 
 	@RequestMapping(value = "/profile/update/{id}",method = RequestMethod.GET)
 	public String getProfile(@PathVariable (value = "id") long id,Model model,HttpSession session) {

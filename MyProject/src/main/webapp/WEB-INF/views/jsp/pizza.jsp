@@ -30,21 +30,21 @@
 	<c:out value=" ${ingredient.name}"></c:out> 
 </c:forEach>
 
-<form  action="cart/add/{pizza.id}" method="get">
+<form  action="/MyProject/cart/add/${pizza.id}" method="post">
 	<label for="size">Size:</label>
 	<select name = "size">
-		 <option value="average">Average</option>
-		 <option selected = "selected" value="big">Big</option>
-		 <option value="jumbo">Jumbo</option>
+		 <option value="Average">Average</option>
+		 <option selected = "Selected" value="big">Big</option>
+		 <option value="Jumbo">Jumbo</option>
 	</select> 
 <label for="dough">Dough:</label>
 	<select name = "dough">
-		 <option selected = "selected"value="handtossed">Hand Tossed</option>
-		 <option value="italianstyle">Italian Style</option>
-		 <option value="thin">Thin</option>
-		 <option value="philadelphia">with Philadelphia</option>
+		 <option selected = "selected"value="Hand Tossed">Hand Tossed</option>
+		 <option value="Italian Style">Italian Style</option>
+		 <option value="Thin">Thin</option>
+		 <option value="with Philadelphia">with Philadelphia</option>
 	</select> 
-	<a href="/MyProject/cart/add/${pizza.id}" ><img border="0"src="/MyProject/images/eCommerce-ICON-small.png" width="20" height="20"></a>
+	<input type="submit" value = "Add to cart">
 	<a href="/MyProject/favorite/add/${pizza.id}" ><img border="0"src="/MyProject/images/heart.png" width="20" height="20"></a>
 </form>
 </div>

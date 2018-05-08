@@ -11,8 +11,11 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import com.example.db.DBManager;
+import com.example.model.Dough;
 import com.example.model.Ingredient;
 import com.example.model.Product;
+import com.example.model.Size;
+import com.example.model.Status;
 import com.example.util.InvalidArgumentsException;
 
 
@@ -142,4 +145,36 @@ public class ProductDao {
 			
 		return product;
 	}	
+	
+	public Size getSizeByName(String name) throws SQLException {
+		Size size = null;
+		String sqlSelectStatus = "SELECT size_id,name FROM sizes WHERE name = ?";
+		try(PreparedStatement ps = connection.prepareStatement(sqlSelectStatus)){
+			ps.setString(1,name);
+			try(ResultSet result =  ps.executeQuery()){
+				if(result.next()) {
+					long id = result.getLong("size_id");
+					String sizeName = result.getString("name");
+					size = new Size(id,sizeName);
+				}
+			}
+		}
+		return size;
+	}
+	
+	public Dough getDoughByName(String name) throws SQLException {
+		Dough dough = null;
+		String sqlSelectStatus = "SELECT dough_id,name FROM doughs WHERE name = ?";
+		try(PreparedStatement ps = connection.prepareStatement(sqlSelectStatus)){
+			ps.setString(1,name);
+			try(ResultSet result =  ps.executeQuery()){
+				if(result.next()) {
+					long id = result.getLong("dough_id");
+					String doughName = result.getString("name");
+					dough = new Dough(id, doughName);
+				}
+			}
+		}
+		return dough;
+	}
 }

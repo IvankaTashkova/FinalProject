@@ -1,9 +1,7 @@
 package com.example.controller;
 
 import java.sql.SQLException;
-import java.time.LocalDateTime;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
@@ -15,10 +13,13 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
+
 import com.example.model.Address;
-import com.example.model.Order;
+import com.example.model.Dough;
 import com.example.model.Product;
 import com.example.model.Restaurant;
+import com.example.model.Size;
 import com.example.model.User;
 import com.example.model.dao.AddressDao;
 import com.example.model.dao.OrderDao;
@@ -39,13 +40,17 @@ public class CartController {
 	@Autowired
 	private RestaurantDao restaurantDao;
 	
-	@RequestMapping(value = "/cart/add/{productId}", method = RequestMethod.GET)
-	protected String getCart(HttpSession session,@PathVariable (value = "productId") String productId,Model model) {
+	@RequestMapping(value = "/cart/add/{productId}", method = RequestMethod.POST)
+	protected String getCart(HttpSession session,@PathVariable (value = "productId") String productId,Model model,@RequestParam String size,@RequestParam String dough) {
 		User user = (User) session.getAttribute("user");
 		ConcurrentHashMap<Product, Integer> cart = new ConcurrentHashMap();
 		Product product = null;
 		try {
 			product = productDao.getProductById(Long.parseLong(productId));
+			Size getSize = productDao.getSizeByName(size);
+			Dough getDough = productDao.getDoughByName(dough);
+			product.setSize(getSize);
+			product.setDough(getDough);
 		} catch (SQLException | InvalidArgumentsException e) {
 			e.printStackTrace();
 			model.addAttribute("exception", e);
@@ -58,19 +63,8 @@ public class CartController {
 			}
 			else {
 				cart.putAll((Map<Product, Integer>)session.getAttribute("cart"));
-				if(isExist(Long.parseLong(productId), cart)) {
-					for (Entry<Product, Integer> entry : cart.entrySet()) {
-						if(entry.getKey().equals(product)) {
-							int quantity = entry.getValue();
-							user.addToShoppingCart(product, quantity+1);
-							cart.put(product, quantity+1);
-						}
-					}
-				}
-				else {
-					cart.put(product, 1);
-					user.addToShoppingCart(product, 1);
-				}
+				cart.put(product, 1);
+				
 			}	
 			session.setAttribute("user", user);
 			session.setAttribute("cart", cart);
@@ -97,18 +91,11 @@ public class CartController {
 		}
 		cart.putAll((Map<Product, Integer>)session.getAttribute("cart"));
 		if(isExist(Long.parseLong(productId), cart)) {
+			cart.remove(product);
 			user.removeProductFromShoppingCart(product);
-			for (Entry<Product, Integer> entry : cart.entrySet()) {
-				if(entry.getKey().equals(product)) {
-					int quantity = entry.getValue();
-					if(quantity == 1) {
-						cart.remove(product);
-					}
-					else {
-						cart.put(product, quantity-1);
-					}
-				}
-			}
+			System.out.println("================exists=================");
+		}else {
+			System.out.println("--------------------------------------");
 		}
 		model.addAttribute("cart", cart);
 		session.setAttribute("cart", cart);

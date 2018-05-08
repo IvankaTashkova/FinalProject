@@ -147,17 +147,7 @@ public class User {
 	}
 	
 	public void removeProductFromShoppingCart(Product product) {
-		for (Entry<Product, Integer> entry : this.cart.entrySet()) {
-			if(entry.getKey().equals(product)) {
-				int quantity = entry.getValue();
-				if(quantity == 1) {
-					this.cart.remove(product);
-				}
-				else {
-					this.cart.put(product, quantity-1);
-				}
-			}
-		}
+		this.cart.remove(product);
 	}
 
 	public Map<Product, Integer> getCart() {

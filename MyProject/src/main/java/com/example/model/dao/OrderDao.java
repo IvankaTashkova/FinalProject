@@ -149,7 +149,7 @@ public class OrderDao implements IOrderDao{
 		connection.setAutoCommit(false);
 		HashMap<Product,Integer> products = new HashMap<>();
 		Product product = null;
-		String sqlSelectOrdeProducts =  "SELECT product_id FROM orders_has_products"
+		String sqlSelectOrdeProducts =  "SELECT product_id,quantity FROM orders_has_products"
 				+ " WHERE order_id = ?;";
 		try(PreparedStatement ps = connection.prepareStatement(sqlSelectOrdeProducts)) {
 			ps.setLong(1, id);
