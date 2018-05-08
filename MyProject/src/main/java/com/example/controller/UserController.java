@@ -215,15 +215,16 @@ public class UserController {
 				if (password.equals(confirmpassword)) {
 					user = new User(username, firstname, lastname, phoneNumber, password, email);
 					userDao.addNewUser(user);
-					}
 				}
-			
+			}
 		} catch (SQLException e ) {
 			model.addAttribute("info", "Your registration failed! Please try again!");
+			e.printStackTrace();
 			return "register";
 		}
 		catch (InvalidArgumentsException e) {
 			model.addAttribute("info", "Invalid input data! Please try again!");
+			e.printStackTrace();
 			return "register";
 		}
 		

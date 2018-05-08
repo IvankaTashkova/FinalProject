@@ -14,7 +14,7 @@
     <a href="/MyProject/" ><img border="0"src="/MyProject/images/home-icon.png" width="40" height="40"></a>
   </div> 
 </div>
-	<div class = "signin-container" style= "text-align:center">
+	<div class = "signin-container" style= "text-align:center; margin-top:150px;" >
 		<form action="register" method="post" >
 		<p style="color:red;"><c:out value="${info}"></c:out></p>
 		<h3  style= "background-color: red;margin-top:50px;border: none;color: white;padding: 5px 150px;text-align: center;display: inline-block;font-size: 18px;border-radius:10px; opacity:0.70;">Registration</h3>
@@ -32,12 +32,12 @@
 		  <td><input style = "margin-left:1%;padding:5px;display:block;border:none;border-bottom:1px solid red;width:200px;height:40px;text-align:center;" type="password" placeholder="confirm password" required name="confirmpassword" maxlength="30"></td>
 		  </tr>
 		  <tr>
-		  <td colspan="5"><input style = "margin:auto;padding:5px;margin-left:25%;display:block;border:none;border-bottom:1px solid red;width:200px;height:40px;text-align:center;" type="number" placeholder="phone number" required name="phoneNumber" maxlength="15"></td>
+		  <td colspan="5"><input style = "margin:auto;padding:5px;margin-left:55%;display:block;border:none;border-bottom:1px solid red;width:200px;height:40px;text-align:center;" type="number" placeholder="phone number" required name="phoneNumber" maxlength="15"></td>
 		 </tr>
 		 <tr>
 		 </tr>
 		 <tr>
-		  <td colspan="5"><button style = " margin-left:50%;background-color: red;border: none;color: white;padding: 10px 32px;text-align: center;text-decoration: none;display: inline-block;font-size: 16px;  border-radius: 10px; opacity:0.85;" type="submit">Make registration</button></td>
+		  <td colspan="5"><button style = " margin-left:40%;background-color: red;border: none;color: white;padding: 10px 32px;text-align: center;text-decoration: none;display: inline-block;font-size: 16px;  border-radius: 10px; opacity:0.85;" type="submit">Make registration</button></td>
 		</tr>
 		<tr>
 		</tr>
