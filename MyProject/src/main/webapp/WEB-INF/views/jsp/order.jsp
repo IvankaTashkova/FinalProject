@@ -47,17 +47,26 @@
 <div style= "margin:auto;border:1px solid red;padding:10px;text-align:center;width:50%">
 <p>Choose address:</p>
 	<p>Select from you addresses:</p>
-
+	<select>
+		<c:forEach var="address" items="${userAddresses}">
+		<option><c:out value="${address.location}"></c:out></option>
+		</c:forEach>
+	</select>
 	<p>or</p>
-	<p>Add new address:</p>
-	<input type="text" name="address" placeholder="address">
+	<a href="/MyProject/profile">Add new address</a>
 </div>
 <br>
 <br>
 <div style= "margin:auto;border:1px solid red;padding:10px;text-align:center;width:50%">
 	<p>You can take you order from one of our restaurants!</p>
- 	<input type="checkbox" name="fromrestaurant" value="">Take from restaurant
  	<p>Choose one:</p>
+ 	<select>
+		<c:forEach var="restaurant" items="${restaurants}">
+			<option><c:out value="${restaurant.address}"></c:out></option>
+		</c:forEach>
+	</select> 
+	<br>
+	<br>
  	<div id="map" style = "height: 500px; width : 500px; margin:auto; margin-bottom:50px; ">
     <script>
       function initMap() {
@@ -86,7 +95,7 @@
         
         addMarker({
         		coordinates:{lat:42.649,lng:23.408},
-        		content:'<h3>Domino\'s</h3><h6>48 prof. Tsvetan Lazarov Boulevard, 1582 Dryjba 2, София</h6>'
+        		content:'<h3>Domino\'s</h3><h6>48 prof. Tsvetan Lazarov Boulevard, 1582 Dryjba 2, Sofia</h6>'
         });
         
         addMarker({

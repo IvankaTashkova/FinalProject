@@ -138,7 +138,8 @@ public class CartController {
 		ConcurrentHashMap<Product, Integer> productsInCart = new ConcurrentHashMap();
 		List<Address>addresses = new ArrayList<>();
 		if (session.getAttribute("cart") == null) {
-			return "login";	
+			model.addAttribute("cartMessage", "Your shopping cart is empty");
+			return "profile";	
 		}
 		else {
 			productsInCart.putAll((Map<Product, Integer>)session.getAttribute("cart"));
@@ -155,16 +156,18 @@ public class CartController {
 		session.setAttribute("productsInCart", productsInCart);
 		model.addAttribute("productsInCart", productsInCart);
 		model.addAttribute("totalPrice", calculatePrice(productsInCart));
-		return "order";
-		/*
 		List<Restaurant>restaurants = new ArrayList<>();
 		try {
 			restaurants.addAll(restaurantDao.getAllRestaurants());
+			model.addAttribute("restaurants", restaurants);
+			session.setAttribute("restaurants", restaurants);
 		} catch (InvalidArgumentsException e) {
-			System.out.println(e.getMessage());
+			e.printStackTrace();
+			model.addAttribute("exception", e);
+			return "error";
 		}
 		session.setAttribute("restaurants", restaurants);
-		return "order";*/
+		return "order";
 	}
 	
 	@RequestMapping(value="/order",method = RequestMethod.POST)

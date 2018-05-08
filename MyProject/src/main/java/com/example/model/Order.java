@@ -13,7 +13,7 @@ public class Order {
 	private long userId;
 	private LocalDateTime date;
 	private double price;
-	private long status;
+	private Status status;
 	private String address;
 	private Restaurant restaurant;
 	private Map<Product, Integer> products = new HashMap<>();
@@ -35,20 +35,19 @@ public class Order {
 	public Order(double price,LocalDateTime date, Map<Product, Integer> products) {
 		setPrice(price);
 		setDate(date);
-		setStatus(Status.REGISTRATED);
 		this.products = products;
 	}
 	
-	public Order(long id,double price,LocalDateTime date, long status) {
-		this.id = id;
-		this.date = date;
-		this.status = status;
+	public Order(long id,double price,LocalDateTime date, Status status) {
 		setId(id);
+		setDate(date);
+		setPrice(price);
+		setStatus(status);
 	}
 	
-	public Order(long id,double price,LocalDateTime date, long status,long userId) {
+	public Order(long id,double price,LocalDateTime date, Status status,long userId) {
 		this(id,price, date, status);
-		setId(id);
+		setUserId(userId);
 	}
 	
 	
@@ -56,7 +55,6 @@ public class Order {
 	public Order(int id,double price,LocalDateTime date, long status, Map<Product, Integer> products) {
 		this.id = id;
 		this.date = date;
-		this.status = status;
 		setId(id);
 		this.setProducts(products);
 	}
@@ -70,12 +68,12 @@ public class Order {
 		this.id = id;
 	}
 	
-	public long getStatus() {
+	public Status getStatus() {
 		return status;
 	}
 	
 	public void setStatus(Status status) {
-		this.status = status.getId();
+		this.status = status;
 	}
 	
 	public double getPrice() {

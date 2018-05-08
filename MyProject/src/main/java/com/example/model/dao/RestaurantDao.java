@@ -23,18 +23,20 @@ public class RestaurantDao implements IRestaurantDao{
 
 	@Override
 	public List<Restaurant> getAllRestaurants() throws InvalidArgumentsException {
-		String sqlSelectAllRestaurants = "SELECT name,address FROM addresses;";
+		String sqlSelectAllRestaurants = "SELECT restaurant_id,name,address FROM restaurants;";
 		List<Restaurant> restaurants = new ArrayList<>();
 		
 		try(PreparedStatement ps = connection.prepareStatement(sqlSelectAllRestaurants)){
-			ResultSet set = ps.executeQuery();
-			while (set.next()) {
-				String name = set.getString("name");
-				String address = set.getString("address");
-				restaurants.add(new Restaurant(name,address));
+			ResultSet result = ps.executeQuery();
+			while (result.next()) {
+				long id = result.getLong("restaurant_id");
+				String name = result.getString("name");
+				String address = result.getString("address");
+				Restaurant restaurant = new Restaurant(id, name, address);
+				restaurants.add(restaurant);
 			}
 		}catch (SQLException e) {
-			System.out.println(e.getMessage());
+			e.printStackTrace();
 		}
 		return restaurants;
 	}

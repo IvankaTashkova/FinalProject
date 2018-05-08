@@ -4,7 +4,7 @@
     <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
-<title>Domino's Pizza | Sing in</title>
+<title>Domino's Pizza | Register</title>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <link rel="stylesheet" href="/MyProject/css/css.css">
@@ -17,7 +17,7 @@
 	<div class = "signin-container" style= "text-align:center">
 		<form action="register" method="post" >
 		<p style="color:red;"><c:out value="${info}"></c:out></p>
-		<h3  style= "background-color: red;margin-top:50px;border: none;color: white;padding: 5px 150px;text-align: center;display: inline-block;font-size: 18px;border-radius:10px; opacity:0.70;">Sign in</h3>
+		<h3  style= "background-color: red;margin-top:50px;border: none;color: white;padding: 5px 150px;text-align: center;display: inline-block;font-size: 18px;border-radius:10px; opacity:0.70;">Registration</h3>
 		<table>
 		<tr> 
 		<td><input style = "margin-left:57%;padding:5px;display:block;border:none;border-bottom:1px solid red;width:200px;height:40px;text-align:center;" type="text" placeholder="first name" required name="firstname" maxlength="45"></td>
@@ -37,7 +37,7 @@
 		 <tr>
 		 </tr>
 		 <tr>
-		  <td colspan="5"><button style = " margin-left:50%;background-color: red;border: none;color: white;padding: 10px 32px;text-align: center;text-decoration: none;display: inline-block;font-size: 16px;  border-radius: 10px; opacity:0.85;" type="submit">Sign in</button></td>
+		  <td colspan="5"><button style = " margin-left:50%;background-color: red;border: none;color: white;padding: 10px 32px;text-align: center;text-decoration: none;display: inline-block;font-size: 16px;  border-radius: 10px; opacity:0.85;" type="submit">Make registration</button></td>
 		</tr>
 		<tr>
 		</tr>

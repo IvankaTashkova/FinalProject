@@ -46,7 +46,6 @@ public class UserController {
 			@RequestParam String username,
 			@RequestParam String password,
 			HttpSession session) {
-			
 		User user = null;
 		//password = BCrypt.hashpw(password, BCrypt.gensalt());
 		try {
@@ -102,7 +101,7 @@ public class UserController {
 			orders.addAll(orderDao.getAllOrderByUser(user));
 			model.addAttribute("orders", orders);
 			session.setAttribute("orders", orders);
-		} catch (SQLException e) {
+		} catch (SQLException | InvalidArgumentsException e) {
 			e.printStackTrace();
 			model.addAttribute("exception", e);
 			return "error";

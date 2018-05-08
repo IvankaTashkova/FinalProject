@@ -43,6 +43,9 @@ h1,h2,h3,h4,h5,h6 {
 
   <div class="w3-row w3-padding-64" id="menu" >
     <div class="w3-col l6 w3-padding-large">
+    <h1 class="w3-center">Menu</h1><br>
+	  <br>
+	  <br>
     <c:import url="menu.jsp"></c:import>
     </div>
     <div class="w3-col l6 w3-padding-large">

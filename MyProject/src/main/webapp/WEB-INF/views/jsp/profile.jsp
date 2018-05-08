@@ -142,6 +142,7 @@
 <div id="cart" style = " margin: auto; text-align:center;">
 <h3 style= "border: none;color: black;padding: 10px 150px;display: inline-block;font-size: 18px;  border-radius: 10px;">Shopping cart</h3>
 	<div style= "margin:auto;border:1px solid red;padding:10px;text-align:center;width:50%">
+	<h4><c:out value="${cartMessage}"></c:out></h4>
 	<table border="0" style = "margin: auto;">
 		<tr>
 			<th>Name</th>
@@ -174,7 +175,7 @@
 			
 </table>
 <a href = "/MyProject/home">Continue shopping</a> 
-<p style = "padding-left:350px;"><a href="/MyProject/order" align = "right">Order now</a></p>
+<p style = "padding-left:350px;"><a href="/MyProject/order">Order now</a></p>
 </div>
 </div>
 <br>
@@ -188,9 +189,18 @@
 	<table style="margin:auto">
 		<tr>
 			<td><c:out value="${order.date}"></c:out></td>
-			<td><c:out value="${order.status}"></c:out></td>
+			<td><c:out value="${order.status.name}"></c:out></td>
 		</tr>
-
+		<c:forEach var = "product" items="${order.products}">
+			<tr>
+				<td>
+					<c:out value="${product.key.name}"></c:out>
+				</td>
+				<td>
+					<c:out value="${product.value}"></c:out>
+				</td>
+			</tr>
+		</c:forEach>
 	</table>
 </c:forEach>
 </c:if>
@@ -204,7 +214,7 @@
 <h4 style = "color:white;"><c:out value="${addressMessage}"></c:out></h4>
 <c:if test="${not empty addresses}">
 <c:forEach var="address" items="${addresses}">
-<h5 style="color:white;"><c:out value="${address.location}"></c:out> <a href="/MyProject/profile/address/delete/${address.id}">Remove</a></h5>
+<h5><c:out value="${address.location}"></c:out> <a href="/MyProject/profile/address/delete/${address.id}">Remove</a></h5>
 </c:forEach>
 </c:if>
 <form action="/MyProject/profile/address" method = "get">
